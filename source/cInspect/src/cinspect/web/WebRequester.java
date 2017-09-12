@@ -9,7 +9,7 @@ import cinspect.exceptions.UnimplementedFunctionException;
 
 public class WebRequester {
 	
-	public WebResponse requestResource(WebResource resource) throws UnimplementedFunctionException {
+	public static WebResponse requestResource(WebResource resource) throws UnimplementedFunctionException {
 		HttpURLConnection connection;
 		//WebResponse responseObject;
 		
@@ -19,11 +19,20 @@ public class WebRequester {
 		try {
 			if(resource.getRequestType() == ResourceRequestType.GET) {
 				connection = (HttpURLConnection) new URL(resource.getUrlPath() + "?" + resource.getParametersAsEncodedString()).openConnection();
-			
+
 				//TODO: SET HEADERS
 				//TODO: HANDLE COOKIES
 			} else if(resource.getRequestType() == ResourceRequestType.POST) {
-				connection = null;
+				connection = (HttpURLConnection) new URL(resource.getUrlPath()).openConnection();
+				String parameters = resource.getParametersAsEncodedString();
+				
+				connection.setDoOutput(true);
+				connection.setInstanceFollowRedirects(false);
+				connection.setUseCaches(false);
+				
+				connection.setRequestMethod("POST");
+				connection.setRequestProperty("Content-Length", Integer.toString(parameters.length()));
+				
 				//TODO: SET HEADERS
 				//TODO: HANDLE COOKIES
 				throw new UnimplementedFunctionException("Fatal error: POST is not implemented yet.");
@@ -31,7 +40,6 @@ public class WebRequester {
 				throw new UnimplementedFunctionException("Fatal error: " + resource.getRequestType().toString() + " is an unsupported HTTP request type.");
 			}
 			
-			//TODO: CLOSE THIS SCANNER SOMEHOW 
 			responseString = readEntireStreamToString(connection);
 			responseCode = connection.getResponseCode();
 		} catch(IOException e) {
@@ -42,7 +50,7 @@ public class WebRequester {
 	}
 	
 	
-	private String readEntireStreamToString(HttpURLConnection connection) {
+	private static String readEntireStreamToString(HttpURLConnection connection) {
 		Scanner scanner;
 		String returnString = null;
 		
@@ -57,25 +65,5 @@ public class WebRequester {
 		 
 		 return returnString;
 	}
-	
-	/*String urlParameters  = "param1=a&param2=b&param3=c";
-	byte[] postData       = urlParameters.getBytes( StandardCharsets.UTF_8 );
-	int    postDataLength = postData.length;
-	String request        = "http://example.com/index.php";
-	URL    url            = new URL( request );
-	HttpURLConnection conn= (HttpURLConnection) url.openConnection();           
-	conn.setDoOutput( true );
-	conn.setInstanceFollowRedirects( false );
-	conn.setRequestMethod( "POST" );
-	conn.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
-	conn.setRequestProperty( "charset", "utf-8");
-	conn.setRequestProperty( "Content-Length", Integer.toString( postDataLength ));
-	conn.setUseCaches( false );
-	try( DataOutputStream wr = new DataOutputStream( conn.getOutputStream())) {
-	   wr.write( postData );
-	}*/
-	
-	
-	//todo: handle cookies
 
 }

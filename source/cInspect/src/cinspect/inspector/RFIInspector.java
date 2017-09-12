@@ -1,5 +1,15 @@
 package cinspect.inspector;
 
-public class RFIInspector {
+import java.util.Map;
+
+import cinspect.web.WebResource;
+
+public class RFIInspector implements Inspector {
+
+	@Override
+	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

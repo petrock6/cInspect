@@ -14,7 +14,7 @@ import cinspect.inspector.statuses.SSNInspectorStatus;
 import cinspect.inspector.statuses.XSSInspectorStatus;
 
 public class WebDatabase {
-	private List<WebResource> resourceDatabase;
+	private static List<WebResource> resourceDatabase;
 	
 	/**
 	 * Create a new database of {@link WebResource}s.
@@ -27,7 +27,7 @@ public class WebDatabase {
 	 * Add a {@link WebResource} to the database. 
 	 * @param resource
 	 */
-	public synchronized void addResource(WebResource resource) {
+	public synchronized static void addResource(WebResource resource) {
 		//TODO: CHECK FOR DUPLICATES UPON INSERTION W/ DEDUPLICATOR MODULE
 		resourceDatabase.add(resource);
 	}
@@ -36,7 +36,7 @@ public class WebDatabase {
 	 * Get a {@link WebResource} which hasn't been crawled yet.
 	 * @return An uncrawled {@link WebResource}, or null if there is none uncrawled in database.
 	 */
-	public synchronized WebResource getUncrawledResource() {
+	public synchronized static WebResource getUncrawledResource() {
 		for(WebResource resource : resourceDatabase) {
 			if(resource.getCrawlStatus() == ResourceCrawlStatus.IS_NOT_CRAWLED)
 				return resource;
@@ -49,7 +49,7 @@ public class WebDatabase {
 	 * Get a {@link WebResource} which hasn't had some module ran on it yet.
 	 * @return A not-inspector {@link WebResource}, or null if all URLs in DB have been inspected for all vulns.
 	 */
-	public synchronized WebResource getUnscannedResource() {
+	public synchronized static WebResource getUnscannedResource() {
 		for(WebResource resource : resourceDatabase) {
 			ResourceInspectStatus inspectStatus = resource.getInspectStatus();
 			

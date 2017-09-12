@@ -3,6 +3,7 @@ package cinspect.web;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,18 +11,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
-import cinspect.web.*;
-
 public class WebResource {
 	private ResourceRequestType requestType; //What method are we using for this URL?
 	private String urlPath; //What is the file we are requesting from the server?
-	private HashMap<String, String> parameters; //What is the query, or parameters, we are passing to the file?
+	private Map<String, String> parameters; //What is the query, or parameters, we are passing to the file?
 	
 	private ResourceCrawlStatus crawlStatus; //Has this URL been crawled for URLs yet?
 	private ResourceInspectStatus inspectStatus; //Has this URL been inspected for vulnerabilites yet?
 	
 	
-	public WebResource(ResourceRequestType requestType, String urlPath, HashMap<String,String> parameters) {
+	public WebResource(ResourceRequestType requestType, String urlPath, Map<String,String> parameters) {
 		this.requestType = requestType;
 		this.urlPath = urlPath;
 		this.parameters = parameters;
@@ -35,7 +34,7 @@ public class WebResource {
 		this.crawlStatus = ResourceCrawlStatus.IS_NOT_CRAWLED;
 		this.inspectStatus = new ResourceInspectStatus();
 		
-		URI uri;
+		URI uri = null;
 		try {
 			uri = new URI(completeURL);
 		} catch (URISyntaxException e) {
@@ -43,11 +42,24 @@ public class WebResource {
 			e.printStackTrace();
 		}
 		
-		urlPath = uri.getScheme() + "://" + uri.getAuthority() + uri.getPath();
-		
-		String query = uri.getQuery();
-		//TODO: use URLEncodedUtils to decompose query string
-		//SEE: https://stackoverflow.com/questions/13592236/parse-a-uri-string-into-name-value-collection
+		this.urlPath = uri.getScheme() + "://" + uri.getAuthority() + uri.getPath();
+		this.parameters = getQueryParameters(uri.getQuery());
+	}
+	
+	public WebResource(WebResource rhs) {
+		this.requestType = rhs.requestType;
+		this.urlPath = rhs.urlPath;
+		this.parameters = rhs.parameters;
+		this.crawlStatus = rhs.crawlStatus;
+		this.inspectStatus = rhs.inspectStatus;
+	}
+	
+	public WebResource(WebResource rhs, Map<String, String> parameters) {
+		this.requestType = rhs.requestType;
+		this.urlPath = rhs.urlPath;
+		this.parameters = parameters;
+		this.crawlStatus = rhs.crawlStatus;
+		this.inspectStatus = rhs.inspectStatus;
 	}
 	
 	/**
@@ -69,7 +81,13 @@ public class WebResource {
 		result += pair.getKey();
 		if(!pair.getValue().equals("")) {
 			result += "=";
-			result += pair.getValue();
+			//result += pair.getValue();
+			try {
+				result += URLEncoder.encode(pair.getValue(), java.nio.charset.StandardCharsets.UTF_8.name());
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		
@@ -80,16 +98,23 @@ public class WebResource {
 			result += pair.getKey();
 			if(!pair.getValue().equals("")) {
 				result += "=";
-				result += pair.getValue();
+				//result += pair.getValue();
+				try {
+					result += URLEncoder.encode(pair.getValue(), java.nio.charset.StandardCharsets.UTF_8.name());
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		
+		/*
 		try {
 			return URLEncoder.encode(result, java.nio.charset.StandardCharsets.UTF_8.name());
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		return result;
 	}
 	
@@ -101,7 +126,7 @@ public class WebResource {
 		this.requestType = requestType;
 	}
 
-	public HashMap<String, String> getParameters() {
+	public Map<String, String> getParameters() {
 		return parameters;
 	}
 
@@ -133,6 +158,22 @@ public class WebResource {
 		this.inspectStatus = inspectStatus;
 	}
 	
+	private Map<String, String> getQueryParameters(String query) {
+		Map<String,String> keyValues = new HashMap<String, String>();
+		
+		String[] keyValuePairs = query.split("&");
+		for(String keyValuePair : keyValuePairs) {
+			int assignmentIndex = keyValuePair.indexOf("=");
+			try {
+				keyValues.put(URLDecoder.decode(keyValuePair.substring(0, assignmentIndex), "UTF-8"), URLDecoder.decode(keyValuePair.substring(assignmentIndex+1), "UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return keyValues;
+	}
 	
 	
 	
