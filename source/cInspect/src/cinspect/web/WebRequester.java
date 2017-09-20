@@ -7,8 +7,18 @@ import java.util.Scanner;
 
 import cinspect.exceptions.UnimplementedFunctionException;
 
+/**
+ * This is a static class which, when given a {@link WebResource}, the class will request the resource and obtain the data associated with it. 
+ * @author Austin Bentley <ab6d9@mst.edu>
+ */
 public class WebRequester {
 	
+	/**
+	 * Given a {@link WebResource}, this function will request the resource and return a {@link WebResponse} object (which itself contains the content of the response from the server.)
+	 * @param resource - {@link WebResource} - The resource to request from the server. 
+	 * @return {@link WebResponse} - The response from the server, containing the HTTP code and the response content. 
+	 * @throws UnimplementedFunctionException - Thrown if for some reason the requested {@link WebResource} is not a GET or POST request. 
+	 */
 	public static WebResponse requestResource(WebResource resource) throws UnimplementedFunctionException {
 		HttpURLConnection connection;
 		//WebResponse responseObject;

@@ -11,6 +11,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
+/**
+ * A WebResource, which is basically a glorified GET or POST request. Use this with {@link WebRequester} to obtain data from the web server. 
+ *  
+ * @author Austin Bentley <ab6d9@mst.edu>
+ */
 public class WebResource {
 	private ResourceRequestType requestType; //What method are we using for this URL?
 	private String urlPath; //What is the file we are requesting from the server?
@@ -19,7 +24,13 @@ public class WebResource {
 	private ResourceCrawlStatus crawlStatus; //Has this URL been crawled for URLs yet?
 	private ResourceInspectStatus inspectStatus; //Has this URL been inspected for vulnerabilites yet?
 	
-	
+
+	/**
+	 * Create a {@link WebResource} object with a {@link ResourceRequestType}, a complete URL path (not including parameters), and parameters as a {@link Map}. 
+	 * @param requestType - {@link ResourceRequestType} - The type of request (whether or not it is GET, POST, HEAD, etc...)
+	 * @param urlPath - {@link String} - The complete URL path (not including parameters.)
+	 * @param parameters - {@link Map} - The parameters to the URL, as a Map. If there are none, then the map is empty (non-null.) 
+	 */
 	public WebResource(ResourceRequestType requestType, String urlPath, Map<String,String> parameters) {
 		this.requestType = requestType;
 		this.urlPath = urlPath;
@@ -29,6 +40,12 @@ public class WebResource {
 		this.inspectStatus = new ResourceInspectStatus();
 	}
 	
+	/**
+	 * Create a {@link WebResource} object with a {@link ResourceRequestType} and a complete URL path with parameters. 
+	 * 
+	 * @param requestType - {@link ResourceRequestType} - The type of request (whether or not it is GET, POST, HEAD, etc...)
+	 * @param completeURL - {@link String} - The complete URL (including parameters, even if it is a POST URL!)
+	 */
 	public WebResource(ResourceRequestType requestType, String completeURL) {
 		this.requestType = requestType;
 		this.crawlStatus = ResourceCrawlStatus.IS_NOT_CRAWLED;
@@ -46,6 +63,10 @@ public class WebResource {
 		this.parameters = getQueryParameters(uri.getQuery());
 	}
 	
+	/**
+	 * A deep copy constructor for {@link WebResource}. 
+	 * @param rhs
+	 */
 	public WebResource(WebResource rhs) {
 		this.requestType = rhs.requestType;
 		this.urlPath = rhs.urlPath;
@@ -54,6 +75,11 @@ public class WebResource {
 		this.inspectStatus = rhs.inspectStatus;
 	}
 	
+	/**
+	 * A deep copy constructor for {@link WebResource}, however the parameters may change. 
+	 * @param rhs
+	 * @param parameters
+	 */
 	public WebResource(WebResource rhs, Map<String, String> parameters) {
 		this.requestType = rhs.requestType;
 		this.urlPath = rhs.urlPath;
@@ -118,46 +144,91 @@ public class WebResource {
 		return result;
 	}
 	
+	/**
+	 * Return the {@link ResourceRequestType} associated with the {@link WebResource}. 
+	 * @return {@link ResourceRequestType}
+	 */
 	public ResourceRequestType getRequestType() {
 		return requestType;
 	}
 
+	/**
+	 * Set the {@link ResourceRequestType} associated with the {@link WebResource}. 
+	 * @param requestType
+	 */
 	public void setRequestType(ResourceRequestType requestType) {
 		this.requestType = requestType;
 	}
 
+	/**
+	 * Returns the {@link Map} of parameters associated with the {@link WebResource}. 
+	 * @return {@link Map}
+	 */
 	public Map<String, String> getParameters() {
 		return parameters;
 	}
 
+	/**
+	 * Sets the {@link Map} of parameters associated with the {@link WebResource}. 
+	 * @param parameters
+	 */
 	public void setParameters(HashMap<String, String> parameters) {
 		this.parameters = parameters;
 	}
 
+	/**
+	 * Gets the URL path of the {@link WebResource} -- does not contain parameters. To get parameters, use {@link setParameters}. 
+	 * @return {@link String}
+	 */
 	public String getUrlPath() {
 		return urlPath;
 	}
 
+	/**
+	 * Sets the URL path of the {@link WebResource} -- do not include parameters. 
+	 * @param urlPath
+	 */
 	public void setUrlPath(String urlPath) {
 		this.urlPath = urlPath;
 	}
 
+	/**
+	 * Returns tthe {@link ResourceCrawlStatus} associated with the {@link WebResource}. 
+	 * @return
+	 */
 	public ResourceCrawlStatus getCrawlStatus() {
 		return crawlStatus;
 	}
 
+	/**
+	 * Sets the {@link ResourceCrawlStatus} associated with the {@link WebResource}. 
+	 * @param crawlStatus
+	 */
 	public void setCrawlStatus(ResourceCrawlStatus crawlStatus) {
 		this.crawlStatus = crawlStatus;
 	}
 
+	/**
+	 * Gets the {@link ResourceInspectStatus} associated with the {@link WebResource}. 
+	 * @return
+	 */
 	public ResourceInspectStatus getInspectStatus() {
 		return inspectStatus;
 	}
 
+	/**
+	 * Sets the {@link ResourceInspectStatus} associated with the {@link WebResource}. 
+	 * @param inspectStatus
+	 */
 	public void setInspectStatus(ResourceInspectStatus inspectStatus) {
 		this.inspectStatus = inspectStatus;
 	}
 	
+	/**
+	 * Provided a HTTP query as a {@link String}, this function will decode it into it's key-value pairs as a {@link Map}. 
+	 * @param query - {@link String} - The query of the URL (or POSTDATA). [Traditionally, this is whatever follows the ? in a URL.]
+	 * @return {@link Map} - The mapping of the parameters. 
+	 */
 	private Map<String, String> getQueryParameters(String query) {
 		Map<String,String> keyValues = new HashMap<String, String>();
 		

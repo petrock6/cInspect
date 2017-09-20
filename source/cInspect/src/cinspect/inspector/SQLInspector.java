@@ -14,6 +14,7 @@ import cinspect.web.WebResponse;
 
 public class SQLInspector implements Inspector {
 
+	//Todo; add more sqlindicators, add regex. 
 	String[] SQLIndicators = {"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near"};
 	
 	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
@@ -76,12 +77,8 @@ public class SQLInspector implements Inspector {
 			
 		}
 		
-		
-		
-		
-		return null;
-		
-
+		//Return the vulnerability assessment for each parameter. 
+		return assessment;
 	}
 
 }

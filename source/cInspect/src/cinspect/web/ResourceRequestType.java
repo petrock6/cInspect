@@ -1,5 +1,10 @@
 package cinspect.web;
 
+/**
+ * This enum class signifies the type of HTTP request we will send to the server. 
+ * Currently, only GET and POST are implemented by {@link WebRequester}. 
+ * @author Austin Bentley <ab6d9@mst.edu>
+ */
 public enum ResourceRequestType {
 	GET, //A standard URL request like you're used to.
 	POST, //A URL request where the data is not inside the URL, but sent separately, inside of POSTDATA.
