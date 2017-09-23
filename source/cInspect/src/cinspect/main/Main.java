@@ -3,6 +3,7 @@ package cinspect.main;
 import java.util.HashMap;
 import java.util.Map;
 
+import cinspect.inspector.VulnerabilityAssessment;
 import cinspect.inspector.SQLInspector;
 import cinspect.web.ResourceRequestType;
 import cinspect.web.WebResource;
@@ -29,7 +30,7 @@ public class Main {
 		WebResource resource = new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/SQLi_test.php", parameters); //note your IP will be different.
 		//End of information that will be filled out by the crawler. Assume you only have "resource". 
 		
-		inspector.isVulnerable(resource);
+		Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 		
 	}
 
