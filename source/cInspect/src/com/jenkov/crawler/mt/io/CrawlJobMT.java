@@ -56,6 +56,28 @@ public class CrawlJobMT implements Runnable {
                     System.out.println(" - "+normalizedUrl);
                     
                 }
+                Elements forms = doc.select("form");
+                for(Element felement : forms){
+                    String method       = felement.attr("method");
+                    String action       = felement.attr("action");
+                    
+                    System.out.println(" \tMethod: "+method);
+                    System.out.println(" \tAction: "+action);
+                    
+                }
+                Elements inputs = doc.select("input");
+                for(Element ielement : inputs){
+                    String type       = ielement.attr("type");
+                    String name       = ielement.attr("name");
+                    String value       = ielement.attr("value");
+                    
+                    System.out.println(" \tType: "+type);
+                    System.out.println(" \tName: "+name);
+                    System.out.println(" \tValue: "+value);
+                    System.out.println("");
+                    
+                }
+                
                 if(crawler.barrier.getNumberWaiting()==1){
                     crawler.barrier.await();
                     
