@@ -15,7 +15,7 @@ public class CrawlerMainMT {
         }*/
 
         //String url = args[0];
-        String url = "http://www.google.com";
+        String url = "http://192.168.1.49/";
         CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
         crawler.addUrl(url);
         crawler.crawl();

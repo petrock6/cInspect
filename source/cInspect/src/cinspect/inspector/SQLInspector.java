@@ -41,13 +41,13 @@ public class SQLInspector implements Inspector {
 			//We need to retain the original value for this permutation. tl;dr we don't want to modify more than one parameter at a time. 
 			String originalValue = entry.getValue();
 			
-			System.out.println("Mutating " + entry.getKey());
+			//System.out.println("Mutating " + entry.getKey());
 			
 			entry.setValue(originalValue + "\'"); //add a quote to attempt to identify a vulnerability.
 			
 			WebResource myResource = new WebResource(resource, parameters); //create a deep copy of the resource, but use the same parameters!
 			
-			System.out.println("Query Permutation: " + myResource.getParametersAsEncodedString()); //Show the new query we are requesting!
+			//System.out.println("Query Permutation: " + myResource.getParametersAsEncodedString()); //Show the new query we are requesting!
 			
 			//Request the permutation. Check if this specific permutation is vulnerable. 
 			try {
@@ -62,7 +62,7 @@ public class SQLInspector implements Inspector {
 				for(String indicator : SQLIndicators) {
 					//We see an indicator -- it's vulnerable!!!
 					if(content.contains(indicator.toLowerCase())) {
-						System.out.println("LIKELY VULNERABILITY DETECTED : parameter is " + entry.getKey() + "!");
+						//System.out.println("LIKELY VULNERABILITY DETECTED : parameter is " + entry.getKey() + "!");
 						assessment.put(entry.getKey(), VulnerabilityAssessment.LIKELY_VULNERABLE);
 					}
 				}
