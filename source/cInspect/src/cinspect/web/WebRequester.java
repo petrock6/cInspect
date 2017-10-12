@@ -59,7 +59,7 @@ public class WebRequester {
 		return new WebResponse(responseCode, responseString);
 	}
 	
-	public static double requesteTime(WebResource resource) throws UnimplementedFunctionException {
+	public static double requestTime(WebResource resource) throws UnimplementedFunctionException {
 		//sends back the response time
 		HttpURLConnection connection;
 		//WebResponse responseObject;
