@@ -1,6 +1,7 @@
 package cinspect.main;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import cinspect.inspector.LFIInspector;
 import cinspect.inspector.RCEInspector;
 import cinspect.inspector.RFIInspector;
 import cinspect.inspector.SQLInspector;
+import cinspect.inspector.AppDoSInspector;
 import cinspect.web.ResourceRequestType;
 import cinspect.web.WebResource;
 
@@ -30,11 +32,13 @@ public class Main {
 		RCEInspector rceInspector = new RCEInspector();
 		
 		ArrayList<WebResource> resources = new ArrayList();
-		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/LFI_test.php?file=blah&submitButon=Show+File"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/RCE_test_get.php?host=example.com&submitButton=Ping+host"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/RFI_test.php?file=TESTER&submitButton=Show+File"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/SQLi_test.php?id=htns&submitButton=Show+Member"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/XSS_test.php?name=htns&submitButton=Display+Name"));
+		
+		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/LFI_test.php?file=blah&submitButon=Show+File"));
+		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/RCE_test_get.php?host=example.com&submitButton=Ping+host"));
+		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/RFI_test.php?file=TESTER&submitButton=Show+File"));
+		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/SQLi_test.php?id=htns&submitButton=Show+Member"));
+		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/XSS_test.php?name=htns&submitButton=Display+Name"));
+		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/AppDoS_test.php?password=uoifadjkvn&submitButton=Search"));
 		
 		testSQLInspector(resources);
 		System.out.println("\n\n\n");
@@ -44,11 +48,13 @@ public class Main {
 		System.out.println("\n\n\n");
 		testXSSInspector(resources);
 		System.out.println("\n\n\n");
-		testRFIInspector(resources);
+		//testRFIInspector(resources);
+		System.out.println("\n\n\n");
+		testAppDoSInspector(resources);
 		System.out.println("\n\n\n");
 		
 	}
-
+	
 	private static void testSQLInspector(List<WebResource> resources) {
 		SQLInspector inspector = new SQLInspector();
 		System.out.println("Testing: SQLInspector");
@@ -115,6 +121,20 @@ public class Main {
 				System.out.println(resource.getUrlPath() + " RFI vulnerable !!!");
 			else
 				System.out.println(resource.getUrlPath() + " not RFI vulnerable");
+		}	
+	}
+	
+	private static void testAppDoSInspector(List<WebResource> resources) {
+		AppDoSInspector inspector = new AppDoSInspector();
+		
+		System.out.println("Testing: AppDoSInspector");
+		for(WebResource resource : resources) {
+			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
+			
+			if(!assessment.isEmpty())
+				System.out.println(resource.getUrlPath() + " AppDoS vulnerable !!!");
+			else
+				System.out.println(resource.getUrlPath() + " not AppDoS vulnerable");
 		}	
 	}
 	
