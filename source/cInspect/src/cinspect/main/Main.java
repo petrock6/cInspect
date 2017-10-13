@@ -33,12 +33,12 @@ public class Main {
 		
 		ArrayList<WebResource> resources = new ArrayList();
 		
-		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/LFI_test.php?file=blah&submitButon=Show+File"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/RCE_test_get.php?host=example.com&submitButton=Ping+host"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/RFI_test.php?file=TESTER&submitButton=Show+File"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/SQLi_test.php?id=htns&submitButton=Show+Member"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/XSS_test.php?name=htns&submitButton=Display+Name"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://localhost/vulnerabilites/AppDoS_test.php?password=uoifadjkvn&submitButton=Search"));
+		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/LFI_test.php?file=blah&submitButon=Show+File"));
+		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/RCE_test_get.php?host=example.com&submitButton=Ping+host"));
+		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/RFI_test.php?file=TESTER&submitButton=Show+File"));
+		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/SQLi_test.php?id=htns&submitButton=Show+Member"));
+		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/XSS_test.php?name=htns&submitButton=Display+Name"));
+		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/AppDoS_test.php?password=uoifadjkvn&submitButton=Search"));
 		
 		testSQLInspector(resources);
 		System.out.println("\n\n\n");
