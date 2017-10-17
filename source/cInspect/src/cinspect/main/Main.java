@@ -34,7 +34,7 @@ public class Main {
 		
 		//Create our inspector object. 
 
-        String url = "http://10.106.1.244/";
+        String url = "http://10.106.1.101/";
         CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
         crawler.addUrl(url);
         crawler.crawl();
@@ -55,7 +55,7 @@ public class Main {
 				testRCEInspector(resource);
 				testLFIInspector(resource);
 				testXSSInspector(resource);
-				//testRFIInspector(resource);
+				testRFIInspector(resource);
 				testTimeSQLInspector(resource);
 				testUDRJSInspector(resource);
 				testAppDoSInspector(resource);
