@@ -37,7 +37,7 @@ public class TimeSQLInspector implements Inspector {
 			
 			WebResource myResource = new WebResource(resource, parameters); //create a deep copy of the resource, but use the same parameters!
 			
-			System.out.println("Query Permutation: " + myResource.getParametersAsEncodedString()); //Show the new query we are requesting!
+			//System.out.println("Query Permutation: " + myResource.getParametersAsEncodedString()); //Show the new query we are requesting!
 			
 			//Request the permutation. Check if this specific permutation is vulnerable. 
 			try {
