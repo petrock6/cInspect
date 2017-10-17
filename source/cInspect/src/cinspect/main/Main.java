@@ -46,7 +46,7 @@ public class Main {
 		System.out.println("\n");
 		
 		for(WebResource resource : resources) {
-			System.out.println("Testing : " + resource.getUrlPath() + resource.getParametersAsEncodedString());
+			System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString());
 			if(!resource.getParameters().isEmpty() ) {
 				testSQLInspector(resource);
 				testRCEInspector(resource);

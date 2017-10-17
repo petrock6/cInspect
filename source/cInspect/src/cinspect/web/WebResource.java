@@ -181,7 +181,8 @@ public class WebResource {
 	 * @return {@link String}
 	 */
 	public String getUrlPath() {
-		return urlPath;
+		//System.out.println("URL PATH : " + urlPath);
+		return urlPath.replace("?", "");
 	}
 
 	/**
