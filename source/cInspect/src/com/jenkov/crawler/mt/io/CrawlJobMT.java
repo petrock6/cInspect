@@ -102,7 +102,7 @@ public class CrawlJobMT implements Runnable {
                         //System.out.println("");
                         
                         if(value.equals("")) 
-                        	value = "__CINSPECT__NO__VALUE__"; //there probably si a better solution to thsi. 
+                        	value = "0"; //there probably si a better solution to thsi. 
                         
                         
                         parameters.put(name, value); //this is going to have to be moved.

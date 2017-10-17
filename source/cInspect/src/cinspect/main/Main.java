@@ -14,6 +14,7 @@ import cinspect.inspector.LFIInspector;
 import cinspect.inspector.RCEInspector;
 import cinspect.inspector.RFIInspector;
 import cinspect.inspector.SQLInspector;
+import cinspect.inspector.TimeSQLInspector;
 import cinspect.web.ResourceRequestType;
 import cinspect.web.WebDatabase;
 import cinspect.web.WebResource;
@@ -48,11 +49,12 @@ public class Main {
 		for(WebResource resource : resources) {
 			System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString());
 			if(!resource.getParameters().isEmpty() ) {
-				testSQLInspector(resource);
+				/*testSQLInspector(resource);
 				testRCEInspector(resource);
 				testLFIInspector(resource);
-				testXSSInspector(resource);
+				testXSSInspector(resource);*/
 				//testRFIInspector(resource);
+				testTimeSQLInspector(resource);
 			}
 		}
 		
@@ -151,6 +153,23 @@ public class Main {
 		}	
 	}
 	
+	private static void testTimeSQLInspector(WebResource resource) {
+		ArrayList<WebResource> resources = new ArrayList<WebResource>();
+		resources.add(resource);
+		testTimeSQLInspector(resources);
+	}
 	
+	private static void testTimeSQLInspector(List<WebResource> resources) {
+		TimeSQLInspector inspector = new TimeSQLInspector();
+		for(WebResource resource : resources) {
+			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
+			
+			if(!assessment.isEmpty()) {
+				System.out.println(resource.getUrlPath() + " TimeSQL vulnerable !!!");
+			} else {
+				System.out.println(resource.getUrlPath() + " not TimeSQL vulnerable");
+			}
+		}
+	}
 	
 }

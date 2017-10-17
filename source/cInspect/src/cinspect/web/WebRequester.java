@@ -89,7 +89,7 @@ public class WebRequester {
 				
 				//TODO: SET HEADERS
 				//TODO: HANDLE COOKIES
-				throw new UnimplementedFunctionException("Fatal error: POST is not implemented yet.");
+				//throw new UnimplementedFunctionException("Fatal error: POST is not implemented yet.");
 			} else {
 				throw new UnimplementedFunctionException("Fatal error: " + resource.getRequestType().toString() + " is an unsupported HTTP request type.");
 			}
