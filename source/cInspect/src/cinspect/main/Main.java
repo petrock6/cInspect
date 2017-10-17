@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jenkov.crawler.mt.io.CrawlerMT;
+import com.jenkov.crawler.util.SameWebsiteOnlyFilter;
+
 import cinspect.inspector.VulnerabilityAssessment;
 import cinspect.inspector.XSSInspector;
 import cinspect.inspector.LFIInspector;
@@ -12,6 +15,7 @@ import cinspect.inspector.RCEInspector;
 import cinspect.inspector.RFIInspector;
 import cinspect.inspector.SQLInspector;
 import cinspect.web.ResourceRequestType;
+import cinspect.web.WebDatabase;
 import cinspect.web.WebResource;
 
 public class Main {
@@ -26,32 +30,44 @@ public class Main {
 		 */
 		
 		//Create our inspector object. 
-		SQLInspector inspector = new SQLInspector(); 
-		RCEInspector rceInspector = new RCEInspector();
+
+        String url = "http://192.168.1.29/";
+        CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
+        crawler.addUrl(url);
+        crawler.crawl();
+        
+        System.out.println("------------ DONE ----------");
+        WebDatabase.printDatabase();
 		
-		ArrayList<WebResource> resources = new ArrayList();
-		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/LFI_test.php?file=blah&submitButon=Show+File"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/RCE_test_get.php?host=example.com&submitButton=Ping+host"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/RFI_test.php?file=TESTER&submitButton=Show+File"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/SQLi_test.php?id=htns&submitButton=Show+Member"));
-		resources.add(new WebResource(ResourceRequestType.GET, "http://192.168.1.49/vulnerabilites/XSS_test.php?name=htns&submitButton=Display+Name"));
+        System.out.println("\n\n\n\n\n\n\n\n");
 		
-		testSQLInspector(resources);
-		System.out.println("\n\n\n");
-		testRCEInspector(resources);
-		System.out.println("\n\n\n");
-		testLFIInspector(resources);
-		System.out.println("\n\n\n");
-		testXSSInspector(resources);
-		System.out.println("\n\n\n");
-		testRFIInspector(resources);
-		System.out.println("\n\n\n");
+		List<WebResource> resources = WebDatabase.getDatabase(); //this needs to be updated. 
+		
+		System.out.println("\n");
+		
+		for(WebResource resource : resources) {
+			System.out.println("Testing : " + resource.getUrlPath() + resource.getParametersAsEncodedString());
+			if(!resource.getParameters().isEmpty() ) {
+				testSQLInspector(resource);
+				testRCEInspector(resource);
+				testLFIInspector(resource);
+				testXSSInspector(resource);
+				//testRFIInspector(resource);
+			}
+		}
+		
+		System.out.println("--- DONE ---");
 		
 	}
 
+	private static void testSQLInspector(WebResource resource) {
+		ArrayList<WebResource> resources = new ArrayList<WebResource>();
+		resources.add(resource);
+		testSQLInspector(resources);
+	}
+	
 	private static void testSQLInspector(List<WebResource> resources) {
 		SQLInspector inspector = new SQLInspector();
-		System.out.println("Testing: SQLInspector");
 		for(WebResource resource : resources) {
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
@@ -62,10 +78,15 @@ public class Main {
 			}
 		}
 	}
+
+	private static void testRCEInspector(WebResource resource) {
+		ArrayList<WebResource> resources = new ArrayList<WebResource>();
+		resources.add(resource);
+		testRCEInspector(resources);
+	}
 	
 	private static void testRCEInspector(List<WebResource> resources) {
 		RCEInspector inspector = new RCEInspector();
-		System.out.println("Testing: RCEInspector");
 		for(WebResource resource : resources) {
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
@@ -76,10 +97,14 @@ public class Main {
 		}	
 	}
 	
+	private static void testLFIInspector(WebResource resource) {
+		ArrayList<WebResource> resources = new ArrayList<WebResource>();
+		resources.add(resource);
+		testLFIInspector(resources);
+	}
+	
 	private static void testLFIInspector(List<WebResource> resources) {
 		LFIInspector inspector = new LFIInspector();
-		
-		System.out.println("Testing: LFIInspector");
 		for(WebResource resource : resources) {
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
@@ -90,10 +115,14 @@ public class Main {
 		}	
 	}
 	
+	private static void testXSSInspector(WebResource resource) {
+		ArrayList<WebResource> resources = new ArrayList<WebResource>();
+		resources.add(resource);
+		testXSSInspector(resources);
+	}
+	
 	private static void testXSSInspector(List<WebResource> resources) {
 		XSSInspector inspector = new XSSInspector();
-		
-		System.out.println("Testing: XSSInspector");
 		for(WebResource resource : resources) {
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
@@ -104,10 +133,14 @@ public class Main {
 		}	
 	}
 	
+	private static void testRFIInspector(WebResource resource) {
+		ArrayList<WebResource> resources = new ArrayList<WebResource>();
+		resources.add(resource);
+		testRFIInspector(resources);
+	}
+	
 	private static void testRFIInspector(List<WebResource> resources) {
 		RFIInspector inspector = new RFIInspector();
-		
-		System.out.println("Testing: RFIInspector");
 		for(WebResource resource : resources) {
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			

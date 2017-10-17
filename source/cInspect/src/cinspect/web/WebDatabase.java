@@ -1,6 +1,7 @@
 package cinspect.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cinspect.inspector.statuses.AppDoSInspectorStatus;
@@ -14,13 +15,19 @@ import cinspect.inspector.statuses.SSNInspectorStatus;
 import cinspect.inspector.statuses.XSSInspectorStatus;
 
 public class WebDatabase {
-	private static List<WebResource> resourceDatabase;
+	private static List<WebResource> resourceDatabase = new ArrayList<WebResource>();
 	
 	/**
 	 * Create a new database of {@link WebResource}s.
 	 */
+	/*
 	WebDatabase() {
 		resourceDatabase = new ArrayList<WebResource>();
+	}*/
+	
+	public static List<WebResource> getDatabase() {
+		System.out.print("You shouldnt use this function unless you really know what youre doing");
+		return resourceDatabase;
 	}
 	
 	/**
@@ -28,7 +35,38 @@ public class WebDatabase {
 	 * @param resource
 	 */
 	public synchronized static void addResource(WebResource resource) {
-		//TODO: CHECK FOR DUPLICATES UPON INSERTION W/ DEDUPLICATOR MODULE
+		for(WebResource resourceIter : resourceDatabase) {
+			if(resource.equals(resourceIter))
+				return;
+		}
+		resource.setCrawlStatus(ResourceCrawlStatus.IS_NOT_CRAWLED);
+		resource.setInspectStatus(new ResourceInspectStatus());
+		resourceDatabase.add(resource);
+	}
+	
+	public synchronized static void addResource(ResourceRequestType requestType, String completeURL) {
+		WebResource resource = new WebResource(requestType, completeURL);
+		
+		for(WebResource resourceIter : resourceDatabase) {
+			if(resource.equals(resourceIter))
+				return;
+		}		
+		
+		resource.setCrawlStatus(ResourceCrawlStatus.IS_NOT_CRAWLED);
+		resource.setInspectStatus(new ResourceInspectStatus());		
+		resourceDatabase.add(resource);
+	}
+	
+	public synchronized static void addResource(ResourceRequestType requestType, String urlPath, HashMap<String,String> parameters) {
+		WebResource resource = new WebResource(requestType, urlPath, parameters);
+		
+		for(WebResource resourceIter : resourceDatabase) {
+			if(resource.equals(resourceIter))
+				return;
+		}		
+		
+		resource.setCrawlStatus(ResourceCrawlStatus.IS_NOT_CRAWLED);
+		resource.setInspectStatus(new ResourceInspectStatus());		
 		resourceDatabase.add(resource);
 	}
 	
@@ -66,6 +104,17 @@ public class WebDatabase {
 		}
 		
 		return null;
+	}
+	
+	public synchronized static void printDatabase() {
+		
+		for(WebResource resource : resourceDatabase) {
+			String entry = resource.getRequestType().name(); 
+			entry += " ";
+			entry += resource.getUrlPath();
+			entry += resource.getParametersAsEncodedString();
+			System.out.println(entry);
+		}
 	}
 	
 	//only inspect one vuln class on one url at a time, otherwise appdos module is useless!

@@ -246,7 +246,9 @@ public class WebResource {
 		return keyValues;
 	}
 	
-	
+	public boolean equals(WebResource rhs) {		
+		return this.requestType.equals(rhs.getRequestType()) && this.urlPath.equals(rhs.getUrlPath()) && this.parameters.equals(rhs.getParameters());
+	}
 	
 	
 }

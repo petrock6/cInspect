@@ -1,5 +1,6 @@
 package cinspect.web;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -45,7 +46,8 @@ public class WebRequester {
 				
 				//TODO: SET HEADERS
 				//TODO: HANDLE COOKIES
-				throw new UnimplementedFunctionException("Fatal error: POST is not implemented yet.");
+				//System.out.println("Warning: POST is not implemented yet.");
+				//throw new UnimplementedFunctionException("Fatal error: POST is not implemented yet.");
 			} else {
 				throw new UnimplementedFunctionException("Fatal error: " + resource.getRequestType().toString() + " is an unsupported HTTP request type.");
 			}
@@ -68,9 +70,11 @@ public class WebRequester {
 			scanner = new Scanner(connection.getInputStream(), "UTF-8");
 			returnString = scanner.useDelimiter("\\A").next();
 			scanner.close();
+		} catch(FileNotFoundException e) {
+			return "";
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return "";
+			//e.printStackTrace();
 		}
 		 
 		 return returnString;
