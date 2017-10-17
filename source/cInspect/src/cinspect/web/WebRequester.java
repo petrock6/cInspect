@@ -61,6 +61,50 @@ public class WebRequester {
 		return new WebResponse(responseCode, responseString);
 	}
 	
+	public static double requestTime(WebResource resource) throws UnimplementedFunctionException {
+		//sends back the response time
+		HttpURLConnection connection;
+		//WebResponse responseObject;
+		
+		int responseCode = -1;
+		String responseString = null;
+		double difference = -1;
+		long start_time = System.nanoTime();
+		
+		try {
+			if(resource.getRequestType() == ResourceRequestType.GET) {
+				connection = (HttpURLConnection) new URL(resource.getUrlPath() + "?" + resource.getParametersAsEncodedString()).openConnection(); 
+				//TODO: SET HEADERS
+				//TODO: HANDLE COOKIES
+			} else if(resource.getRequestType() == ResourceRequestType.POST) {
+				connection = (HttpURLConnection) new URL(resource.getUrlPath()).openConnection();
+				String parameters = resource.getParametersAsEncodedString();
+				
+				connection.setDoOutput(true);
+				connection.setInstanceFollowRedirects(false);
+				connection.setUseCaches(false);
+				
+				connection.setRequestMethod("POST");
+				connection.setRequestProperty("Content-Length", Integer.toString(parameters.length()));
+				
+				//TODO: SET HEADERS
+				//TODO: HANDLE COOKIES
+				throw new UnimplementedFunctionException("Fatal error: POST is not implemented yet.");
+			} else {
+				throw new UnimplementedFunctionException("Fatal error: " + resource.getRequestType().toString() + " is an unsupported HTTP request type.");
+			}
+			
+			responseString = readEntireStreamToString(connection);
+			responseCode = connection.getResponseCode();
+			long end_time = System.nanoTime(); 
+			difference = (end_time - start_time) / 1e6;// response time in milliseconds
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+		return difference;
+	}
+	
 	
 	private static String readEntireStreamToString(HttpURLConnection connection) {
 		Scanner scanner;
