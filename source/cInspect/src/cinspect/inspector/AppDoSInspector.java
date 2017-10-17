@@ -10,7 +10,7 @@ import cinspect.web.WebResponse;
 
 public class AppDoSInspector implements Inspector {
 	
-	String[] AppDosIndicators = {"e"};
+	String[] AppDosIndicators = {"e", "9999999"};
 	@Override
 	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
 		

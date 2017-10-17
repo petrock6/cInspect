@@ -10,6 +10,7 @@ import com.jenkov.crawler.util.SameWebsiteOnlyFilter;
 
 import cinspect.inspector.VulnerabilityAssessment;
 import cinspect.inspector.XSSInspector;
+import cinspect.inspector.AppDoSInspector;
 import cinspect.inspector.LFIInspector;
 import cinspect.inspector.RCEInspector;
 import cinspect.inspector.RFIInspector;
@@ -33,7 +34,7 @@ public class Main {
 		
 		//Create our inspector object. 
 
-        String url = "http://192.168.1.29/";
+        String url = "http://10.106.1.244/";
         CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
         crawler.addUrl(url);
         crawler.crawl();
@@ -57,6 +58,7 @@ public class Main {
 				//testRFIInspector(resource);
 				testTimeSQLInspector(resource);
 				testUDRJSInspector(resource);
+				testAppDoSInspector(resource);
 			}
 		}
 		
@@ -189,6 +191,25 @@ public class Main {
 				System.out.println(resource.getUrlPath() + " UDRJS vulnerable !!!");
 			} else {
 				System.out.println(resource.getUrlPath() + " not UDRJS vulnerable");
+			}
+		}
+	}
+	
+	private static void testAppDoSInspector(WebResource resource) {
+		ArrayList<WebResource> resources = new ArrayList<WebResource>();
+		resources.add(resource);
+		testAppDoSInspector(resources);
+	}
+	
+	private static void testAppDoSInspector(List<WebResource> resources) {
+		AppDoSInspector inspector = new AppDoSInspector();
+		for(WebResource resource : resources) {
+			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
+			
+			if(!assessment.isEmpty()) {
+				System.out.println(resource.getUrlPath() + " AppDoS vulnerable !!!");
+			} else {
+				System.out.println(resource.getUrlPath() + " not AppDoS vulnerable");
 			}
 		}
 	}
