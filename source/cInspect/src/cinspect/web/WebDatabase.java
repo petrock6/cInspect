@@ -26,7 +26,7 @@ public class WebDatabase {
 	}*/
 	
 	public static List<WebResource> getDatabase() {
-		System.out.print("You shouldnt use this function unless you really know what youre doing");
+		//System.out.print("You shouldnt use this function unless you really know what youre doing");
 		return resourceDatabase;
 	}
 	

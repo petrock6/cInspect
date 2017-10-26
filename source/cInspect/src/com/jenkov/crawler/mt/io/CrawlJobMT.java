@@ -74,9 +74,9 @@ public class CrawlJobMT implements Runnable {
                     String action       = felement.attr("action");
                     
                     
-                    System.out.print(" \tMethod: "+method);
-                    System.out.println(" \tAction: "+action + "( " + this.urlToCrawl);
-                    System.out.println(felement.outerHtml());
+                    //System.out.print(" \tMethod: "+method);
+                    //System.out.println(" \tAction: "+action + "( " + this.urlToCrawl);
+                    //System.out.println(felement.outerHtml());
                     
                     if(method.toLowerCase().equals("get")) {//this is going to have to be moved.
                     	requestType = ResourceRequestType.GET;//this is going to have to be moved.
