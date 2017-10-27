@@ -1,10 +1,5 @@
 package cinspect.main;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import cinspect.main.GUI;
-
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,6 +11,7 @@ import com.jenkov.crawler.util.SameWebsiteOnlyFilter;
 
 import cinspect.inspector.VulnerabilityAssessment;
 import cinspect.inspector.XSSInspector;
+import cinspect.GUI.GUI;
 import cinspect.inspector.AppDoSInspector;
 import cinspect.inspector.LFIInspector;
 import cinspect.inspector.RCEInspector;
@@ -26,6 +22,8 @@ import cinspect.inspector.UDRJSInspector;
 import cinspect.web.ResourceRequestType;
 import cinspect.web.WebDatabase;
 import cinspect.web.WebResource;
+
+import cinspect.GUI.*;
 
 public class Main{
 	public static void main(String[] args) {
