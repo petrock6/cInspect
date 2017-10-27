@@ -1,5 +1,10 @@
 package cinspect.main;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+import cinspect.main.GUI;
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,11 +27,11 @@ import cinspect.web.ResourceRequestType;
 import cinspect.web.WebDatabase;
 import cinspect.web.WebResource;
 
-public class Main {
-
+public class Main{
 	public static void main(String[] args) {
-
-        String url = args[0];
+		GUI app = new GUI();
+		
+        String url = "http://localhost/vulnerabilites/";
         CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
         crawler.addUrl(url);
         crawler.crawl();
