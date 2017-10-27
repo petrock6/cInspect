@@ -15,4 +15,8 @@ public class GUI extends Application{
 		
 	}
 	
+	public void print(String output){
+		System.out.println(output);
+	}
+	
 }
