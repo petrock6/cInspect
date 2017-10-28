@@ -25,27 +25,32 @@ import cinspect.web.WebResource;
 
 import cinspect.GUI.*;
 
-public class Main{
-	static GUI app;
+public class Main extends GUI{
+	
+	static String[] globalArgs;
+	
 	public static void main(String[] args) {
-		app = new GUI();
-		
+		globalArgs = args;
+		launch(globalArgs);
+	}
+	/*
+	public static void go(){
         String url = "http://localhost/vulnerabilites/";
         CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
         crawler.addUrl(url);
         crawler.crawl();
         
-        app.print("------------ DONE ----------");
+        System.out.println("------------ DONE ----------");
         WebDatabase.printDatabase();
 		
-        app.print("\n\n\n");
+        System.out.println("\n\n\n");
 		
 		List<WebResource> resources = WebDatabase.getDatabase(); //this needs to be updated.
 		Collections.reverse(resources);
 		
-		app.print("\n");
+		System.out.println("\n");
 		
-		app.print("Starting test in 5 seconds...");
+		System.out.println("Starting test in 5 seconds...");
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
@@ -54,34 +59,34 @@ public class Main{
 		}
 		
 		for(WebResource resource : resources) {
-			//app.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString());
+			//System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString());
 			if(!resource.getParameters().isEmpty() ) {
-				app.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SQL Injection\r"); 
+				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SQL Injection\r"); 
 				testSQLInspector(resource);
-				app.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RCE Injection\r");
+				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RCE Injection\r");
 				testRCEInspector(resource);
-				app.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : LFI\r");
+				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : LFI\r");
 				testLFIInspector(resource);
-				app.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : XSS Injection\r");
+				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : XSS Injection\r");
 				testXSSInspector(resource);
-				app.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RFI\r");
+				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RFI\r");
 				testRFIInspector(resource);
-				app.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : TimeSQL Injection\r");
+				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : TimeSQL Injection\r");
 				testTimeSQLInspector(resource);
-				app.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : UDR\r");
+				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : UDR\r");
 				testUDRJSInspector(resource);
-				app.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : Application DoS\r");
+				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : Application DoS\r");
 				testAppDoSInspector(resource);
 			}
 			
-			app.print("\n\n");
+			System.out.println("\n\n");
 		}
 		
-		app.print("--- DONE ---");
+		System.out.println("--- DONE ---");
 		
-	}
+	}*/
 
-	private static void testSQLInspector(WebResource resource) {
+	public static void testSQLInspector(WebResource resource) {
 		ArrayList<WebResource> resources = new ArrayList<WebResource>();
 		resources.add(resource);
 		testSQLInspector(resources);
@@ -93,16 +98,16 @@ public class Main{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//app.print("");
-				//app.print(resource.getUrlPath() + " SQL vulnerable !!!");
-				app.print(resource.getUrlPath() + " SQL vulnerable !!!");
+				//System.out.println("");
+				//System.out.println(resource.getUrlPath() + " SQL vulnerable !!!");
+				System.out.println(resource.getUrlPath() + " SQL vulnerable !!!");
 			} else {
-				//app.print(resource.getUrlPath() + " not SQL vulnerable");
+				//System.out.println(resource.getUrlPath() + " not SQL vulnerable");
 			}
 		}
 	}
 
-	private static void testRCEInspector(WebResource resource) {
+	public static void testRCEInspector(WebResource resource) {
 		ArrayList<WebResource> resources = new ArrayList<WebResource>();
 		resources.add(resource);
 		testRCEInspector(resources);
@@ -114,15 +119,15 @@ public class Main{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//app.print("");
-				app.print(resource.getUrlPath() + " RCE vulnerable !!!");
+				//System.out.println("");
+				System.out.println(resource.getUrlPath() + " RCE vulnerable !!!");
 			}
 			//else
-			//	app.print(resource.getUrlPath() + " not RCE vulnerable");
+			//	System.out.println(resource.getUrlPath() + " not RCE vulnerable");
 		}	
 	}
 	
-	private static void testLFIInspector(WebResource resource) {
+	public static void testLFIInspector(WebResource resource) {
 		ArrayList<WebResource> resources = new ArrayList<WebResource>();
 		resources.add(resource);
 		testLFIInspector(resources);
@@ -134,15 +139,15 @@ public class Main{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//app.print("");
-				app.print(resource.getUrlPath() + " LFI vulnerable !!!");
+				//System.out.println("");
+				System.out.println(resource.getUrlPath() + " LFI vulnerable !!!");
 			}
 			//else
-			//	app.print(resource.getUrlPath() + " not LFI vulnerable");
+			//	System.out.println(resource.getUrlPath() + " not LFI vulnerable");
 		}	
 	}
 	
-	private static void testXSSInspector(WebResource resource) {
+	public static void testXSSInspector(WebResource resource) {
 		ArrayList<WebResource> resources = new ArrayList<WebResource>();
 		resources.add(resource);
 		testXSSInspector(resources);
@@ -154,15 +159,15 @@ public class Main{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//app.print("");
-				app.print(resource.getUrlPath() + " XSS vulnerable !!!");
+				//System.out.println("");
+				System.out.println(resource.getUrlPath() + " XSS vulnerable !!!");
 			}
 			//else
-			//	app.print(resource.getUrlPath() + " not XSS vulnerable");
+			//	System.out.println(resource.getUrlPath() + " not XSS vulnerable");
 		}	
 	}
 	
-	private static void testRFIInspector(WebResource resource) {
+	public static void testRFIInspector(WebResource resource) {
 		ArrayList<WebResource> resources = new ArrayList<WebResource>();
 		resources.add(resource);
 		testRFIInspector(resources);
@@ -174,15 +179,15 @@ public class Main{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//app.print("");
-				app.print(resource.getUrlPath() + " RFI vulnerable !!!");
+				//System.out.println("");
+				System.out.println(resource.getUrlPath() + " RFI vulnerable !!!");
 			}
 			//else
-			//	app.print(resource.getUrlPath() + " not RFI vulnerable");
+			//	System.out.println(resource.getUrlPath() + " not RFI vulnerable");
 		}	
 	}
 	
-	private static void testTimeSQLInspector(WebResource resource) {
+	public static void testTimeSQLInspector(WebResource resource) {
 		ArrayList<WebResource> resources = new ArrayList<WebResource>();
 		resources.add(resource);
 		testTimeSQLInspector(resources);
@@ -194,15 +199,15 @@ public class Main{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//app.print("");
-				app.print(resource.getUrlPath() + " TimeSQL vulnerable !!!");
+				//System.out.println("");
+				System.out.println(resource.getUrlPath() + " TimeSQL vulnerable !!!");
 			} else {
-				//app.print(resource.getUrlPath() + " not TimeSQL vulnerable");
+				//System.out.println(resource.getUrlPath() + " not TimeSQL vulnerable");
 			}
 		}
 	}
 	
-	private static void testUDRJSInspector(WebResource resource) {
+	public static void testUDRJSInspector(WebResource resource) {
 		ArrayList<WebResource> resources = new ArrayList<WebResource>();
 		resources.add(resource);
 		testUDRJSInspector(resources);
@@ -214,15 +219,15 @@ public class Main{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//app.print("");
-				app.print(resource.getUrlPath() + " UDRJS vulnerable !!!");
+				//System.out.println("");
+				System.out.println(resource.getUrlPath() + " UDRJS vulnerable !!!");
 			} else {
-				//app.print(resource.getUrlPath() + " not UDRJS vulnerable");
+				//System.out.println(resource.getUrlPath() + " not UDRJS vulnerable");
 			}
 		}
 	}
 	
-	private static void testAppDoSInspector(WebResource resource) {
+	public static void testAppDoSInspector(WebResource resource) {
 		ArrayList<WebResource> resources = new ArrayList<WebResource>();
 		resources.add(resource);
 		testAppDoSInspector(resources);
@@ -234,10 +239,10 @@ public class Main{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//app.print("");
-				app.print(resource.getUrlPath() + " AppDoS vulnerable !!!");
+				//System.out.println("");
+				System.out.println(resource.getUrlPath() + " AppDoS vulnerable !!!");
 			} else {
-				//app.print(resource.getUrlPath() + " not AppDoS vulnerable");
+				//System.out.println(resource.getUrlPath() + " not AppDoS vulnerable");
 			}
 		}
 	}
