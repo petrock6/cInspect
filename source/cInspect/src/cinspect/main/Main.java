@@ -33,58 +33,6 @@ public class Main extends GUI{
 		globalArgs = args;
 		launch(globalArgs);
 	}
-	/*
-	public static void go(){
-        String url = "http://localhost/vulnerabilites/";
-        CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
-        crawler.addUrl(url);
-        crawler.crawl();
-        
-        System.out.println("------------ DONE ----------");
-        WebDatabase.printDatabase();
-		
-        System.out.println("\n\n\n");
-		
-		List<WebResource> resources = WebDatabase.getDatabase(); //this needs to be updated.
-		Collections.reverse(resources);
-		
-		System.out.println("\n");
-		
-		System.out.println("Starting test in 5 seconds...");
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		for(WebResource resource : resources) {
-			//System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString());
-			if(!resource.getParameters().isEmpty() ) {
-				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SQL Injection\r"); 
-				testSQLInspector(resource);
-				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RCE Injection\r");
-				testRCEInspector(resource);
-				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : LFI\r");
-				testLFIInspector(resource);
-				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : XSS Injection\r");
-				testXSSInspector(resource);
-				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RFI\r");
-				testRFIInspector(resource);
-				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : TimeSQL Injection\r");
-				testTimeSQLInspector(resource);
-				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : UDR\r");
-				testUDRJSInspector(resource);
-				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : Application DoS\r");
-				testAppDoSInspector(resource);
-			}
-			
-			System.out.println("\n\n");
-		}
-		
-		System.out.println("--- DONE ---");
-		
-	}*/
 
 	public static void testSQLInspector(WebResource resource) {
 		ArrayList<WebResource> resources = new ArrayList<WebResource>();

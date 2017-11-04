@@ -59,7 +59,11 @@ public class GUI extends Application{
 		optionsVBox.setPrefWidth(100);
 		
 		//Interactive objects instantiation
-		//inputTextField = new TextField();
+		inputTextField = new TextField();
+		inputTextField.setPrefWidth(400);
+		inputTextField.setLayoutX(50);
+		inputTextField.setLayoutY(15);
+		inputTextField.setOnAction(new TextFieldHandler());
 		sqlCheck = new CheckBox("SQL");
 		rceCheck = new CheckBox("RCE");
 		lfiCheck = new CheckBox("LFI");
@@ -78,7 +82,7 @@ public class GUI extends Application{
 		optionsVBox.getChildren().add(runButton);
 		
 		//Add items to Bottom Pane
-		//textInputPane.getChildren().add(inputTextField);
+		textInputPane.getChildren().add(inputTextField);
 		
 		//BorderPane layout
 		mainPane.setCenter(textDisplayPane);
@@ -89,11 +93,18 @@ public class GUI extends Application{
 		//Display App
 		primaryStage.show();
 		
-		//Main.go();
 	}
 	
 	public void print(String output){
 		System.out.println(output);
+	}
+	
+	public class TextFieldHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent event) {
+			String input = inputTextField.getText();
+			inputTextField.setText("");
+			System.out.println(input);
+		}
 	}
 	
 	public class RunButtonEvent implements EventHandler<ActionEvent>{
