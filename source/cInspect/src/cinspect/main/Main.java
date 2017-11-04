@@ -47,8 +47,7 @@ public class Main extends GUI{
 			
 			if(!assessment.isEmpty()) {
 				//System.out.println("");
-				//System.out.println(resource.getUrlPath() + " SQL vulnerable !!!");
-				System.out.println(resource.getUrlPath() + " SQL vulnerable !!!");
+				GUI.print(resource.getUrlPath() + " SQL vulnerable !!!");
 			} else {
 				//System.out.println(resource.getUrlPath() + " not SQL vulnerable");
 			}
@@ -68,7 +67,7 @@ public class Main extends GUI{
 			
 			if(!assessment.isEmpty()) {
 				//System.out.println("");
-				System.out.println(resource.getUrlPath() + " RCE vulnerable !!!");
+				GUI.print(resource.getUrlPath() + " RCE vulnerable !!!");
 			}
 			//else
 			//	System.out.println(resource.getUrlPath() + " not RCE vulnerable");
@@ -88,7 +87,7 @@ public class Main extends GUI{
 			
 			if(!assessment.isEmpty()) {
 				//System.out.println("");
-				System.out.println(resource.getUrlPath() + " LFI vulnerable !!!");
+				GUI.print(resource.getUrlPath() + " LFI vulnerable !!!");
 			}
 			//else
 			//	System.out.println(resource.getUrlPath() + " not LFI vulnerable");
@@ -108,7 +107,7 @@ public class Main extends GUI{
 			
 			if(!assessment.isEmpty()) {
 				//System.out.println("");
-				System.out.println(resource.getUrlPath() + " XSS vulnerable !!!");
+				GUI.print(resource.getUrlPath() + " XSS vulnerable !!!");
 			}
 			//else
 			//	System.out.println(resource.getUrlPath() + " not XSS vulnerable");
@@ -128,7 +127,7 @@ public class Main extends GUI{
 			
 			if(!assessment.isEmpty()) {
 				//System.out.println("");
-				System.out.println(resource.getUrlPath() + " RFI vulnerable !!!");
+				GUI.print(resource.getUrlPath() + " RFI vulnerable !!!");
 			}
 			//else
 			//	System.out.println(resource.getUrlPath() + " not RFI vulnerable");
@@ -148,7 +147,7 @@ public class Main extends GUI{
 			
 			if(!assessment.isEmpty()) {
 				//System.out.println("");
-				System.out.println(resource.getUrlPath() + " TimeSQL vulnerable !!!");
+				GUI.print(resource.getUrlPath() + " TimeSQL vulnerable !!!");
 			} else {
 				//System.out.println(resource.getUrlPath() + " not TimeSQL vulnerable");
 			}
