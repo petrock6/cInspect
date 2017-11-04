@@ -31,7 +31,7 @@ public class GUI extends Application{
 	TextField inputTextField;
 	CheckBox sqlCheck, rceCheck, lfiCheck, xssCheck, 
 			 rfiCheck, tsqlCheck, udrjsCheck, appdosCheck;
-	Button runButton;
+	Button runButton, stopButton;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -52,10 +52,11 @@ public class GUI extends Application{
 		textInputPane.setPrefHeight(50);
 		checkboxVBox = new VBox();
 		checkboxVBox.setStyle("-fx-background-color: RED; -fx-padding: 10");
-		checkboxVBox.setSpacing(5);
+		checkboxVBox.setSpacing(8);
 		checkboxVBox.setPrefSize(80, 200);
 		optionsVBox = new VBox();
 		optionsVBox.setStyle("-fx-background-color: GREEN; -fx-padding: 5");
+		optionsVBox.setSpacing(10);
 		optionsVBox.setPrefWidth(100);
 		
 		//Interactive objects instantiation
@@ -73,13 +74,16 @@ public class GUI extends Application{
 		udrjsCheck = new CheckBox("UDRJS");
 		appdosCheck = new CheckBox("APPDOS");
 		runButton = new Button("Run Program");
-		runButton.setOnAction(new RunButtonEvent());
+		runButton.setOnAction(new RunButtonHandler());
+		stopButton = new Button("STOP");
+		stopButton.setOnAction(new StopButtonHandler());
+		
 		
 		//Add items to VBox
 		optionsVBox.getChildren().add(checkboxVBox);
 		checkboxVBox.getChildren().addAll(sqlCheck, rceCheck, lfiCheck, xssCheck, 
 			 rfiCheck, tsqlCheck, udrjsCheck, appdosCheck);
-		optionsVBox.getChildren().add(runButton);
+		optionsVBox.getChildren().addAll(runButton, stopButton);
 		
 		//Add items to Bottom Pane
 		textInputPane.getChildren().add(inputTextField);
@@ -107,7 +111,14 @@ public class GUI extends Application{
 		}
 	}
 	
-	public class RunButtonEvent implements EventHandler<ActionEvent>{
+	public class StopButtonHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent event){
+			//Requires multithreading so we can actually stop the program
+			print("---------- TERMINATING ----------");
+		}
+	}
+	
+	public class RunButtonHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent event) {
 			Main main = new Main();
 			String url = "http://localhost/vulnerabilites/"; //Change this to whatever it needs to be
