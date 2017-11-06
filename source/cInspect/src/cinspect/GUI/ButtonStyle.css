@@ -1,0 +1,44 @@
+.close{
+	-fx-border-radius: 1.0em;
+	-fx-background-radius: 1.0em, 1.0em;
+	-fx-padding: 0.0em 0.307692em -0.076923em 0.307692em;
+	-fx-font-weight: bold;
+	-fx-font-size: 10.0;
+	-fx-background-color: #ff5c5c;
+	-fx-border-color: #e33e41;
+}
+
+.close:pressed {
+  -fx-background-color: #c14645;
+  -fx-border-color: #b03537;
+}
+
+.minimize{
+	-fx-border-radius: 1.0em;
+	-fx-background-radius: 1.0em, 1.0em;
+	-fx-padding: 0.0em 0.307692em -0.076923em 0.307692em;
+	-fx-font-weight: bold;
+	-fx-font-size: 10.0;
+	-fx-background-color: #ffbd4c;
+	-fx-border-color: #e09e3e;
+}
+
+.minimize:pressed {
+  -fx-background-color: #c08e38;
+  -fx-border-color: #af7c33;
+}
+
+.maximize{
+	-fx-border-radius: 1.0em;
+	-fx-background-radius: 1.0em, 1.0em;
+	-fx-padding: 0.0em 0.307692em -0.076923em 0.307692em;
+	-fx-font-weight: bold;
+	-fx-font-size: 10.0;
+	-fx-background-color: #00ca56;
+	-fx-border-color: #14ae46;
+}
+
+.maximize:pressed {
+  -fx-background-color: #029740;
+  -fx-border-color: #128435;
+}

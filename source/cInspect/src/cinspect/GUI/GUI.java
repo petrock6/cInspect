@@ -13,6 +13,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,8 +38,8 @@ public class GUI extends Application {
 	TextField inputTextField;
 	CheckBox sqlCheck, rceCheck, lfiCheck, xssCheck, 
 			 rfiCheck, tsqlCheck, udrjsCheck, appdosCheck,
-			 phpinfoCheck, ccssnCheck;;
-	Button runButton, stopButton;
+			 phpinfoCheck, ccssnCheck;
+	Button runButton, stopButton, closeButton, minimizeButton, maximizeButton;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -48,20 +50,18 @@ public class GUI extends Application {
 		
 		BorderPane mainPane = new BorderPane();
 		Scene mainScene = new Scene(mainPane, 500, 500);
-		//mainScene.getStylesheets().add("cInspect/GUI/Stylesheet.css");
 		mainScene.setRoot(mainPane);
+		mainScene.getStylesheets().add("cInspect/GUI/ButtonStyle.css");
 		primaryStage.setScene(mainScene);
 		primaryStage.setTitle("cInspect - A Web Vulnerability Scanner");
 		primaryStage.initStyle(StageStyle.TRANSPARENT);
-		
-		//ToolBar toolBar = new ToolBar(new Button("Close"));
 		
 		//Display instantiation
 		textDisplayPane = new Pane();
 		textInputPane = new Pane();
 		textInputPane.setPrefHeight(50);
 		checkboxVBox = new VBox();
-		checkboxVBox.setStyle("-fx-padding: 10");
+		checkboxVBox.setStyle("-fx-padding: 10; -fx-background-color: rgb(230.0, 230.0, 230.0);");
 		checkboxVBox.setSpacing(8);
 		checkboxVBox.setPrefSize(80, 200);
 		optionsVBox = new VBox();
@@ -90,6 +90,16 @@ public class GUI extends Application {
 		stopButton = new Button("STOP");
 		stopButton.setOnAction(new StopButtonHandler());
 		
+		//Toolbar
+		closeButton = new Button("  ");
+		closeButton.getStyleClass().add("close");
+		minimizeButton = new Button("  ");
+		minimizeButton.getStyleClass().add("minimize");
+		maximizeButton = new Button("  ");
+		maximizeButton.getStyleClass().add("maximize");
+		ToolBar toolbar = new ToolBar();
+		toolbar.getItems().addAll(closeButton, new Label(" "), 
+				minimizeButton, new Label(" "), maximizeButton);
 		
 		//Add items to VBox
 		optionsVBox.getChildren().add(checkboxVBox);
@@ -104,7 +114,7 @@ public class GUI extends Application {
 		mainPane.setCenter(textDisplayPane);
 		mainPane.setBottom(textInputPane);
 		mainPane.setRight(optionsVBox);
-		//mainPane.setTop(toolBar);
+		mainPane.setTop(toolbar);
 		
 		
 		//Display App
