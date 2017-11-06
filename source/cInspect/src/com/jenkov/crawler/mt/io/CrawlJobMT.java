@@ -39,9 +39,19 @@ public class CrawlJobMT implements Runnable {
         try{
             crawl();
         }catch(Exception ex){
-            
+            System.out.println("caught exception");
         }
     }
+    
+    private boolean isValidURL(String url) {
+		try {
+			new URI(url);
+			return true;
+		} catch (URISyntaxException e) {
+			return false;
+		}
+    }
+    
     public void crawl() throws IOException{
 
         URL url = new URL(this.urlToCrawl);
@@ -65,6 +75,11 @@ public class CrawlJobMT implements Runnable {
                     String normalizedUrl = UrlNormalizer.normalize(linkUrl, baseUrl);
                     crawler.linksQueue.put(normalizedUrl);
                     
+                    System.out.println("blah");
+                    if(isValidURL(normalizedUrl)) {
+                    	System.out.println("Adding: " + normalizedUrl + " (" + linkUrl + " )");
+                    	WebDatabase.addResource(ResourceRequestType.GET, normalizedUrl);
+                    }
                     //System.out.println(" - "+normalizedUrl);
                     
                 }

@@ -181,18 +181,18 @@ public class GUI extends Application{
 						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : Application DoS\r");
 						main.testAppDoSInspector(resource);
 					}
-					/*
-					if(phpinfoCheck.isSelected()) {
-						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : phpinfo()\r");
-						main.testPhpinfoInspector(resource);
-					}*/
-					if(ccssnCheck.isSelected()) {
-						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : CC/SSN\r");
-						main.testCCInspector(resource);
-						main.testSSNInspector(resource);
-					}
 				}
-				System.out.println("\n\n");
+				/*
+				if(phpinfoCheck.isSelected()) {
+					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : phpinfo()\r");
+					main.testPhpinfoInspector(resource);
+				}*/
+				if(ccssnCheck.isSelected()) {
+					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : CC/SSN\r");
+					main.testCCInspector(resource);
+					main.testSSNInspector(resource);
+				}
+				System.out.println("\n");
 			}	
 			System.out.println("--- DONE ---");
 		}

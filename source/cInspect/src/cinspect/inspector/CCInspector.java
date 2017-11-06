@@ -17,7 +17,7 @@ public class CCInspector implements Inspector {
 	@Override
 	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
 		
-		
+		/*
 		Map<String, VulnerabilityAssessment> assessment = new HashMap<String, VulnerabilityAssessment>();
 		WebResource myResource = new WebResource(resource, resource.getParameters());
 		String content;
@@ -34,7 +34,10 @@ public class CCInspector implements Inspector {
 			e.printStackTrace();
 		}
 		
-	    return assessment;
+	    return assessment;*/
+		
+		//BROKEN ATM: REGEX NEEDS HELP! 
+		return null;
 	}
 
 }

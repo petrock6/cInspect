@@ -233,14 +233,16 @@ public class WebResource {
 	private Map<String, String> getQueryParameters(String query) {
 		Map<String,String> keyValues = new HashMap<String, String>();
 		
-		String[] keyValuePairs = query.split("&");
-		for(String keyValuePair : keyValuePairs) {
-			int assignmentIndex = keyValuePair.indexOf("=");
-			try {
-				keyValues.put(URLDecoder.decode(keyValuePair.substring(0, assignmentIndex), "UTF-8"), URLDecoder.decode(keyValuePair.substring(assignmentIndex+1), "UTF-8"));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if(query != null && !query.equals("")) {
+			String[] keyValuePairs = query.split("&");
+			for(String keyValuePair : keyValuePairs) {
+				int assignmentIndex = keyValuePair.indexOf("=");
+				try {
+					keyValues.put(URLDecoder.decode(keyValuePair.substring(0, assignmentIndex), "UTF-8"), URLDecoder.decode(keyValuePair.substring(assignmentIndex+1), "UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+				// 	TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		
