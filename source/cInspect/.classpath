@@ -7,5 +7,6 @@
 			<accessrule kind="accessible" pattern="javafx/**"/>
 		</accessrules>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Sam/git/cInspect/source/cInspect/jars/aquafx-0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,7 +1,9 @@
 package cinspect.GUI;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -9,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToolBar;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
@@ -25,6 +28,8 @@ import cinspect.web.ResourceRequestType;
 import cinspect.web.WebDatabase;
 import cinspect.web.WebResource;
 
+import com.aquafx_project.AquaFx;
+
 public class GUI extends Application {
 	Pane textDisplayPane, textInputPane;
 	VBox optionsVBox, checkboxVBox;
@@ -39,24 +44,28 @@ public class GUI extends Application {
 		// TODO Auto-generated method stub
 		
 		//Initial setup
+		AquaFx.style();
+		
 		BorderPane mainPane = new BorderPane();
 		Scene mainScene = new Scene(mainPane, 500, 500);
+		//mainScene.getStylesheets().add("cInspect/GUI/Stylesheet.css");
 		mainScene.setRoot(mainPane);
 		primaryStage.setScene(mainScene);
 		primaryStage.setTitle("cInspect - A Web Vulnerability Scanner");
+		primaryStage.initStyle(StageStyle.TRANSPARENT);
+		
+		//ToolBar toolBar = new ToolBar(new Button("Close"));
 		
 		//Display instantiation
 		textDisplayPane = new Pane();
-		textDisplayPane.setStyle("-fx-background-color: WHITE");
 		textInputPane = new Pane();
-		textInputPane.setStyle("-fx-background-color: BLUE");
 		textInputPane.setPrefHeight(50);
 		checkboxVBox = new VBox();
-		checkboxVBox.setStyle("-fx-background-color: RED; -fx-padding: 10");
+		checkboxVBox.setStyle("-fx-padding: 10");
 		checkboxVBox.setSpacing(8);
 		checkboxVBox.setPrefSize(80, 200);
 		optionsVBox = new VBox();
-		optionsVBox.setStyle("-fx-background-color: GREEN; -fx-padding: 5");
+		optionsVBox.setStyle("-fx-padding: 5");
 		optionsVBox.setSpacing(10);
 		optionsVBox.setPrefWidth(125);
 		
@@ -95,6 +104,7 @@ public class GUI extends Application {
 		mainPane.setCenter(textDisplayPane);
 		mainPane.setBottom(textInputPane);
 		mainPane.setRight(optionsVBox);
+		//mainPane.setTop(toolBar);
 		
 		
 		//Display App
