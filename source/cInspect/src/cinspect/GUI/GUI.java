@@ -25,7 +25,7 @@ import cinspect.web.ResourceRequestType;
 import cinspect.web.WebDatabase;
 import cinspect.web.WebResource;
 
-public class GUI extends Application{
+public class GUI extends Application {
 	Pane textDisplayPane, textInputPane;
 	VBox optionsVBox, checkboxVBox;
 	TextField inputTextField;
@@ -116,8 +116,13 @@ public class GUI extends Application{
 	
 	public class StopButtonHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent event){
-			//Requires multithreading so we can actually stop the program
 			print("---------- TERMINATING ----------");
+			
+			for(Thread t : Main.threads) {
+				t.interrupt();
+			}
+			
+			Main.threads.clear();
 		}
 	}
 	
@@ -125,6 +130,7 @@ public class GUI extends Application{
 		public void handle(ActionEvent event) {
 			Main main = new Main();
 			//String url = "http://localhost/vulnerabilites/"; //Change this to whatever it needs to be
+			
 			String url = "http://192.168.1.29/";
 	        CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
 	        crawler.addUrl(url);
@@ -140,62 +146,9 @@ public class GUI extends Application{
 			
 			System.out.println("\n");
 			
-			System.out.println("Starting test in 5 seconds...");
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			for(WebResource resource : resources) {
-				if(!resource.getParameters().isEmpty() ) {
-					if(sqlCheck.isSelected()){
-						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SQL Injection\r"); 
-						main.testSQLInspector(resource);
-					}
-					if(rceCheck.isSelected()){
-						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RCE Injection\r");
-						main.testRCEInspector(resource);
-					}
-					if(lfiCheck.isSelected()){
-						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : LFI\r");
-						main.testLFIInspector(resource);
-					}
-					if(xssCheck.isSelected()){
-						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : XSS Injection\r");
-						main.testXSSInspector(resource);
-					}
-					if(rfiCheck.isSelected()){
-						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RFI\r");
-						main.testRFIInspector(resource);
-					}
-					if(tsqlCheck.isSelected()){
-						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : TimeSQL Injection\r");
-						main.testTimeSQLInspector(resource);
-					}
-					if(udrjsCheck.isSelected()){
-						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : UDR\r");
-						main.testUDRJSInspector(resource);
-					}
-					if(appdosCheck.isSelected()){
-						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : Application DoS\r");
-						main.testAppDoSInspector(resource);
-					}
-				}
-				/*
-				if(phpinfoCheck.isSelected()) {
-					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : phpinfo()\r");
-					main.testPhpinfoInspector(resource);
-				}*/
-				if(ccssnCheck.isSelected()) {
-					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : CC/SSN\r");
-					main.testCCInspector(resource);
-					main.testSSNInspector(resource);
-				}
-				System.out.println("\n");
-			}	
-			System.out.println("--- DONE ---");
-		}
+			
+			Main.spawnThreads(3, sqlCheck.isSelected(), rceCheck.isSelected(), lfiCheck.isSelected(), xssCheck.isSelected(), rfiCheck.isSelected(), tsqlCheck.isSelected(), udrjsCheck.isSelected(), appdosCheck.isSelected(), phpinfoCheck.isSelected(), ccssnCheck.isSelected());
 		
+		}
 	}
 }

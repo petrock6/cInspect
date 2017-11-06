@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cinspect.exceptions.UnimplementedFunctionException;
+import cinspect.inspector.statuses.SQLInspectorStatus;
+import cinspect.inspector.statuses.XSSInspectorStatus;
 import cinspect.web.WebRequester;
 import cinspect.web.WebResource;
 import cinspect.web.WebResponse;
@@ -15,7 +17,7 @@ public class XSSInspector implements Inspector {
 	
 	@Override
 	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
-		
+		resource.getInspectStatus().setXss(XSSInspectorStatus.CURRENTLY_INSPECTING);
 		//Copies the existing resource so as to not modify the original version
 		Map<String, String> parameters = resource.getParameters();
 		Map<String, VulnerabilityAssessment> assessment = new HashMap<String, VulnerabilityAssessment>();
@@ -48,6 +50,7 @@ public class XSSInspector implements Inspector {
 			}
 			entry.setValue(originalValue);
 		}
+		resource.getInspectStatus().setXss(XSSInspectorStatus.INSPECTED);
 		// TODO Auto-generated method stub
 		return assessment;
 	}

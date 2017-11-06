@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cinspect.exceptions.UnimplementedFunctionException;
+import cinspect.inspector.statuses.RCEInspectorStatus;
+import cinspect.inspector.statuses.SQLInspectorStatus;
 import cinspect.web.WebRequester;
 import cinspect.web.WebResource;
 import cinspect.web.WebResponse;
@@ -12,6 +14,7 @@ public class RCEInspector implements Inspector {
 	String[] RCEIndicators = {"load averages"};
 	@Override
 	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
+		resource.getInspectStatus().setRce(RCEInspectorStatus.CURRENTLY_INSPECTING);
 		Map<String, String> parameters = resource.getParameters();
 		Map<String, VulnerabilityAssessment> assessment = new HashMap<String, VulnerabilityAssessment>();
 		
@@ -56,6 +59,8 @@ public class RCEInspector implements Inspector {
 			
 		}
 		
+		
+		resource.getInspectStatus().setRce(RCEInspectorStatus.INSPECTED);
 		//Return the vulnerability assessment for each parameter. 
 		return assessment;
 	}

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cinspect.exceptions.UnimplementedFunctionException;
+import cinspect.inspector.statuses.RFIInspectorStatus;
+import cinspect.inspector.statuses.SQLInspectorStatus;
 import cinspect.web.WebRequester;
 import cinspect.web.WebResource;
 import cinspect.web.WebResponse;
@@ -14,6 +16,7 @@ public class RFIInspector implements Inspector {
   String[] RFIIndicators = {"domain in examples without prior coordination or asking for permission.</p>"};
 	
   public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
+  resource.getInspectStatus().setRfi(RFIInspectorStatus.CURRENTLY_INSPECTING);
   /*
    * We can tell if a web page is vulnerable to Remote File Inclusion if 
    * 
@@ -74,6 +77,7 @@ public class RFIInspector implements Inspector {
 			
     }
 				
+    resource.getInspectStatus().setRfi(RFIInspectorStatus.INSPECTED);
     return assessment;
 	
   }

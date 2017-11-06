@@ -8,6 +8,8 @@ import cinspect.inspector.statuses.RCEInspectorStatus;
 import cinspect.inspector.statuses.RFIInspectorStatus;
 import cinspect.inspector.statuses.SQLInspectorStatus;
 import cinspect.inspector.statuses.SSNInspectorStatus;
+import cinspect.inspector.statuses.TimedSQLInspectorStatus;
+import cinspect.inspector.statuses.UDRJSInspectorStatus;
 import cinspect.inspector.statuses.XSSInspectorStatus;
 
 public class ResourceInspectStatus {
@@ -19,6 +21,8 @@ public class ResourceInspectStatus {
 	private RFIInspectorStatus rfi;
 	private SQLInspectorStatus sql;
 	private SSNInspectorStatus ssn;
+	private TimedSQLInspectorStatus timedSQL;
+	private UDRJSInspectorStatus udrjs;
 	private XSSInspectorStatus xss;
 	
 	ResourceInspectStatus() {
@@ -30,6 +34,8 @@ public class ResourceInspectStatus {
 		rfi = RFIInspectorStatus.NOT_INSPECTED;
 		sql = SQLInspectorStatus.NOT_INSPECTED;
 		ssn = SSNInspectorStatus.NOT_INSPECTED;
+		timedSQL = TimedSQLInspectorStatus.NOT_INSPECTED;
+		udrjs = UDRJSInspectorStatus.NOT_INSPECTED;
 		xss = XSSInspectorStatus.NOT_INSPECTED;
 	}
 	
@@ -80,6 +86,18 @@ public class ResourceInspectStatus {
 	}
 	public void setSsn(SSNInspectorStatus ssn) {
 		this.ssn = ssn;
+	}
+	public TimedSQLInspectorStatus getTimedSQL() {
+		return timedSQL;
+	}
+	public void setTimedSQL(TimedSQLInspectorStatus timedSQL) {
+		this.timedSQL = timedSQL;
+	}
+	public UDRJSInspectorStatus getUDRJS() {
+		return udrjs;
+	}
+	public void setUdrjs(UDRJSInspectorStatus udrjs) {
+		this.udrjs = udrjs;
 	}
 	public XSSInspectorStatus getXss() {
 		return xss;

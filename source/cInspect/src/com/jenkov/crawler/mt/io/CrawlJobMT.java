@@ -55,6 +55,7 @@ public class CrawlJobMT implements Runnable {
     public void crawl() throws IOException{
 
         URL url = new URL(this.urlToCrawl);
+        System.out.println("Checking out : " + url);
 
         URLConnection urlConnection = null;
         try {
@@ -75,9 +76,9 @@ public class CrawlJobMT implements Runnable {
                     String normalizedUrl = UrlNormalizer.normalize(linkUrl, baseUrl);
                     crawler.linksQueue.put(normalizedUrl);
                     
-                    System.out.println("blah");
+                    //System.out.println("blah");
                     if(isValidURL(normalizedUrl)) {
-                    	System.out.println("Adding: " + normalizedUrl + " (" + linkUrl + " )");
+                    	//System.out.println("Adding: " + normalizedUrl + " (" + linkUrl + " )");
                     	WebDatabase.addResource(ResourceRequestType.GET, normalizedUrl);
                     }
                     //System.out.println(" - "+normalizedUrl);
@@ -88,10 +89,6 @@ public class CrawlJobMT implements Runnable {
                     String method       = felement.attr("method");
                     String action       = felement.attr("action");
                     
-                    
-                    //System.out.print(" \tMethod: "+method);
-                    //System.out.println(" \tAction: "+action + "( " + this.urlToCrawl);
-                    //System.out.println(felement.outerHtml());
                     
                     if(method.toLowerCase().equals("get")) {//this is going to have to be moved.
                     	requestType = ResourceRequestType.GET;//this is going to have to be moved.
@@ -111,11 +108,7 @@ public class CrawlJobMT implements Runnable {
                         String name       = ielement.attr("name");
                         String value       = ielement.attr("value");
                         
-                        //System.out.println(" \tType: "+type);
-                        //System.out.println(" \tName: "+name);
-                        //System.out.println(" \tValue: "+value);
-                        //System.out.println("");
-                        
+
                         if(value.equals("")) 
                         	value = "0"; //there probably si a better solution to thsi. 
                         

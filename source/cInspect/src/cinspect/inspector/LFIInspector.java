@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import cinspect.exceptions.UnimplementedFunctionException;
+import cinspect.inspector.statuses.LFIInspectorStatus;
+import cinspect.inspector.statuses.SQLInspectorStatus;
 import cinspect.web.WebRequester;
 import cinspect.web.WebResource;
 import cinspect.web.WebResponse;
@@ -18,6 +20,7 @@ public class LFIInspector implements Inspector {
 	String[] LFIIndicators = {"$FreeBSD:"};
 	
 	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
+		resource.getInspectStatus().setLfi(LFIInspectorStatus.CURRENTLY_INSPECTING);
 		/*
 		 * We can tell if a URL is vulnerable to LFI by attempting to traverse directories and include in /etc/passwd file
 		 * 
@@ -69,7 +72,7 @@ public class LFIInspector implements Inspector {
 			
 		}
 		
-		
+		resource.getInspectStatus().setLfi(LFIInspectorStatus.INSPECTED);
 		return assessment;
 		
 

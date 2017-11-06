@@ -6,6 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cinspect.exceptions.UnimplementedFunctionException;
+import cinspect.inspector.statuses.SQLInspectorStatus;
+import cinspect.inspector.statuses.SSNInspectorStatus;
 import cinspect.web.WebRequester;
 import cinspect.web.WebResource;
 
@@ -16,7 +18,7 @@ public class SSNInspector implements Inspector {
 	
 	@Override
 	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
-		
+		resource.getInspectStatus().setSsn(SSNInspectorStatus.CURRENTLY_INSPECTING);
 		
 		Map<String, VulnerabilityAssessment> assessment = new HashMap<String, VulnerabilityAssessment>();
 		WebResource myResource = new WebResource(resource, resource.getParameters());
@@ -34,6 +36,7 @@ public class SSNInspector implements Inspector {
 			e.printStackTrace();
 		}
 		
+		resource.getInspectStatus().setSsn(SSNInspectorStatus.INSPECTED);
 	    return assessment;
 	}
 

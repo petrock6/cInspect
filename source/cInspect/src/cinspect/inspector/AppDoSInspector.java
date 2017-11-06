@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cinspect.exceptions.UnimplementedFunctionException;
+import cinspect.inspector.statuses.AppDoSInspectorStatus;
+import cinspect.inspector.statuses.SQLInspectorStatus;
 import cinspect.web.WebRequester;
 import cinspect.web.WebResource;
 import cinspect.web.WebResponse;
@@ -13,7 +15,7 @@ public class AppDoSInspector implements Inspector {
 	String[] AppDosIndicators = {"e", "9999999"};
 	@Override
 	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
-		
+		resource.getInspectStatus().setAppDoS(AppDoSInspectorStatus.CURRENTLY_INSPECTING);
 		Map<String, String> parameters = resource.getParameters();
 		Map<String, VulnerabilityAssessment> assessment = new HashMap<String, VulnerabilityAssessment>();
 	
@@ -50,6 +52,7 @@ public class AppDoSInspector implements Inspector {
 			
 		}
 		
+		resource.getInspectStatus().setAppDoS(AppDoSInspectorStatus.INSPECTED);
 		//Return the vulnerability assessment for each parameter. 
 		return assessment;
 	}

@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import cinspect.exceptions.UnimplementedFunctionException;
+import cinspect.inspector.statuses.SQLInspectorStatus;
+import cinspect.inspector.statuses.TimedSQLInspectorStatus;
 import cinspect.web.WebRequester;
 import cinspect.web.WebResource;
 import cinspect.web.WebResponse;
@@ -15,6 +17,7 @@ import cinspect.web.WebResponse;
 public class TimeSQLInspector implements Inspector {
 
 	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
+		resource.getInspectStatus().setTimedSQL(TimedSQLInspectorStatus.CURRENTLY_INSPECTING);
 		/*
 		 * We can tell if a URL is vulnerable to Time based SQL injection if we add a command to sleep and the response takes longer
 		 *  
@@ -61,6 +64,7 @@ public class TimeSQLInspector implements Inspector {
 			
 		}
 		
+		resource.getInspectStatus().setTimedSQL(TimedSQLInspectorStatus.INSPECTED);
 		//Return the vulnerability assessment for each parameter. 
 		return assessment;
 	}

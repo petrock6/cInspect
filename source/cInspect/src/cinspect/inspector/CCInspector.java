@@ -6,6 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cinspect.exceptions.UnimplementedFunctionException;
+import cinspect.inspector.statuses.CCInspectorStatus;
+import cinspect.inspector.statuses.SQLInspectorStatus;
 import cinspect.web.WebRequester;
 import cinspect.web.WebResource;
 
@@ -16,7 +18,7 @@ public class CCInspector implements Inspector {
 	
 	@Override
 	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
-		
+		resource.getInspectStatus().setCc(CCInspectorStatus.CURRENTLY_INSPECTING);
 		/*
 		Map<String, VulnerabilityAssessment> assessment = new HashMap<String, VulnerabilityAssessment>();
 		WebResource myResource = new WebResource(resource, resource.getParameters());
@@ -37,6 +39,8 @@ public class CCInspector implements Inspector {
 	    return assessment;*/
 		
 		//BROKEN ATM: REGEX NEEDS HELP! 
+		
+		resource.getInspectStatus().setCc(CCInspectorStatus.INSPECTED);
 		return null;
 	}
 

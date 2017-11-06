@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import cinspect.exceptions.UnimplementedFunctionException;
+import cinspect.inspector.statuses.SQLInspectorStatus;
 import cinspect.web.WebRequester;
 import cinspect.web.WebResource;
 import cinspect.web.WebResponse;
@@ -18,6 +19,8 @@ public class SQLInspector implements Inspector {
 	String[] SQLIndicators = {"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near"};
 	
 	public Map<String, VulnerabilityAssessment> isVulnerable(WebResource resource) {
+		resource.getInspectStatus().setSql(SQLInspectorStatus.CURRENTLY_INSPECTING);
+		
 		/*
 		 * We can tell if a URL is vulnerable to SQL injection if we add a ' and an error pops up.
 		 * 
@@ -77,6 +80,7 @@ public class SQLInspector implements Inspector {
 			
 		}
 		
+		resource.getInspectStatus().setSql(SQLInspectorStatus.INSPECTED);
 		//Return the vulnerability assessment for each parameter. 
 		return assessment;
 	}

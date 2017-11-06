@@ -80,7 +80,13 @@ public class CrawlerMT {
                 System.out.println("Error crawling URL: " + nextUrl);
             }
             
-                
+            //TODO: Delay in MS config between crawler grabs on GUI
+            try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
         }
         
