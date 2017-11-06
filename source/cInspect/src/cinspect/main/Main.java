@@ -13,10 +13,12 @@ import cinspect.inspector.VulnerabilityAssessment;
 import cinspect.inspector.XSSInspector;
 import cinspect.GUI.GUI;
 import cinspect.inspector.AppDoSInspector;
+import cinspect.inspector.CCInspector;
 import cinspect.inspector.LFIInspector;
 import cinspect.inspector.RCEInspector;
 import cinspect.inspector.RFIInspector;
 import cinspect.inspector.SQLInspector;
+import cinspect.inspector.SSNInspector;
 import cinspect.inspector.TimeSQLInspector;
 import cinspect.inspector.UDRJSInspector;
 import cinspect.web.ResourceRequestType;
@@ -193,5 +195,47 @@ public class Main extends GUI{
 			}
 		}
 	}
+	
+	public static void testCCInspector(WebResource resource) {
+		ArrayList<WebResource> resources = new ArrayList<WebResource>();
+		resources.add(resource);
+		testCCInspector(resources);
+	}
+	
+	private static void testCCInspector(List<WebResource> resources) {
+		CCInspector inspector = new CCInspector();
+		for(WebResource resource : resources) {
+			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
+			
+			if(!assessment.isEmpty()) {
+				//System.out.println("");
+				System.out.println(resource.getUrlPath() + " CC vulnerable !!!");
+			} else {
+				//System.out.println(resource.getUrlPath() + " not CC vulnerable");
+			}
+		}
+	}
+	
+	public static void testSSNInspector(WebResource resource) {
+		ArrayList<WebResource> resources = new ArrayList<WebResource>();
+		resources.add(resource);
+		testSSNInspector(resources);
+	}
+	
+	private static void testSSNInspector(List<WebResource> resources) {
+		SSNInspector inspector = new SSNInspector();
+		for(WebResource resource : resources) {
+			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
+			
+			if(!assessment.isEmpty()) {
+				//System.out.println("");
+				System.out.println(resource.getUrlPath() + " SSN vulnerable !!!");
+			} else {
+				//System.out.println(resource.getUrlPath() + " not SSN vulnerable");
+			}
+		}
+	}
+	
+
 	
 }

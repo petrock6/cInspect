@@ -110,27 +110,6 @@ public class CrawlJobMT implements Runnable {
                     }
                     
                 }
-                /*
-                //TODO: @Sam 
-                //Needs to only search for inputs in the form above. 
-                Elements inputs = doc.select("input");
-                for(Element ielement : inputs){
-                    String type       = ielement.attr("type");
-                    String name       = ielement.attr("name");
-                    String value       = ielement.attr("value");
-                    
-                    //System.out.println(" \tType: "+type);
-                    //System.out.println(" \tName: "+name);
-                    //System.out.println(" \tValue: "+value);
-                    //System.out.println("");
-                    
-                    if(value.equals("")) 
-                    	value = "__CINSPECT__NO__VALUE__"; //there probably si a better solution to thsi. 
-                    
-                    
-                    parameters.put(name, value); //this is going to have to be moved.
-                    
-                }*/
                 
                 if(requestType != null && !formUrl.isEmpty() && !parameters.isEmpty()) {
                 	WebDatabase.addResource(requestType, formUrl, parameters);//this is going to have to be moved.

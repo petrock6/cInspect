@@ -30,7 +30,8 @@ public class GUI extends Application{
 	VBox optionsVBox, checkboxVBox;
 	TextField inputTextField;
 	CheckBox sqlCheck, rceCheck, lfiCheck, xssCheck, 
-			 rfiCheck, tsqlCheck, udrjsCheck, appdosCheck;
+			 rfiCheck, tsqlCheck, udrjsCheck, appdosCheck,
+			 phpinfoCheck, ccssnCheck;;
 	Button runButton, stopButton;
 	
 	@Override
@@ -57,7 +58,7 @@ public class GUI extends Application{
 		optionsVBox = new VBox();
 		optionsVBox.setStyle("-fx-background-color: GREEN; -fx-padding: 5");
 		optionsVBox.setSpacing(10);
-		optionsVBox.setPrefWidth(100);
+		optionsVBox.setPrefWidth(125);
 		
 		//Interactive objects instantiation
 		inputTextField = new TextField();
@@ -70,9 +71,11 @@ public class GUI extends Application{
 		lfiCheck = new CheckBox("LFI");
 		xssCheck = new CheckBox("XSS");
 		rfiCheck = new CheckBox("RFI");
-		tsqlCheck = new CheckBox("TSQL");
+		tsqlCheck = new CheckBox("Timed SQL");
 		udrjsCheck = new CheckBox("UDRJS");
-		appdosCheck = new CheckBox("APPDOS");
+		appdosCheck = new CheckBox("AppDoS");
+		phpinfoCheck = new CheckBox("Phpinfo");
+		ccssnCheck = new CheckBox("CC/SSN");
 		runButton = new Button("Run Program");
 		runButton.setOnAction(new RunButtonHandler());
 		stopButton = new Button("STOP");
@@ -82,7 +85,7 @@ public class GUI extends Application{
 		//Add items to VBox
 		optionsVBox.getChildren().add(checkboxVBox);
 		checkboxVBox.getChildren().addAll(sqlCheck, rceCheck, lfiCheck, xssCheck, 
-			 rfiCheck, tsqlCheck, udrjsCheck, appdosCheck);
+			 rfiCheck, tsqlCheck, udrjsCheck, appdosCheck, phpinfoCheck, ccssnCheck);
 		optionsVBox.getChildren().addAll(runButton, stopButton);
 		
 		//Add items to Bottom Pane
@@ -121,7 +124,8 @@ public class GUI extends Application{
 	public class RunButtonHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent event) {
 			Main main = new Main();
-			String url = "http://localhost/vulnerabilites/"; //Change this to whatever it needs to be
+			//String url = "http://localhost/vulnerabilites/"; //Change this to whatever it needs to be
+			String url = "http://192.168.1.29/";
 	        CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
 	        crawler.addUrl(url);
 	        crawler.crawl();
@@ -176,6 +180,16 @@ public class GUI extends Application{
 					if(appdosCheck.isSelected()){
 						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : Application DoS\r");
 						main.testAppDoSInspector(resource);
+					}
+					/*
+					if(phpinfoCheck.isSelected()) {
+						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : phpinfo()\r");
+						main.testPhpinfoInspector(resource);
+					}*/
+					if(ccssnCheck.isSelected()) {
+						System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : CC/SSN\r");
+						main.testCCInspector(resource);
+						main.testSSNInspector(resource);
 					}
 				}
 				System.out.println("\n\n");
