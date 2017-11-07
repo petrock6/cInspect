@@ -2,6 +2,7 @@ package cinspect.GUI;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.Scene;
@@ -18,7 +19,10 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.TextArea;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
 import java.util.List;
 import java.util.Collections;
@@ -42,6 +46,9 @@ public class GUI extends Application {
 			 phpinfoCheck, ccssnCheck;
 	Button runButton, stopButton, closeButton, minimizeButton, maximizeButton;
 	static TextArea text;
+	double xOffset, yOffset, textOffset = 5;
+	boolean maxToggle = false;
+	double oldX, oldY, oldW, oldH;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -71,11 +78,14 @@ public class GUI extends Application {
 		optionsVBox.setSpacing(10);
 		optionsVBox.setPrefWidth(125);
 		
+		//Save default window size
+		oldW = mainScene.getWidth();
+		oldH = mainScene.getHeight();
+		
 		//Interactive objects instantiation
 		inputTextField = new TextField();
-		inputTextField.setPrefWidth(370);
-		inputTextField.setLayoutX(5);
-		//inputTextField.setLayoutY(5);
+		inputTextField.setPrefWidth(375-textOffset);
+		inputTextField.setLayoutX(textOffset);
 		inputTextField.setOnAction(new TextFieldHandler());
 		sqlCheck = new CheckBox("SQL");
 		rceCheck = new CheckBox("RCE");
@@ -95,16 +105,70 @@ public class GUI extends Application {
 		//Toolbar
 		closeButton = new Button("  ");
 		closeButton.getStyleClass().add("close");
+		closeButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Platform.exit();
+			}
+		});
 		minimizeButton = new Button("  ");
 		minimizeButton.getStyleClass().add("minimize");
+		minimizeButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				primaryStage.toBack();
+			}
+		});
 		maximizeButton = new Button("  ");
 		maximizeButton.getStyleClass().add("maximize");
+		maximizeButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Screen screen = Screen.getPrimary();
+				
+				if(maxToggle == false){
+					Rectangle2D bounds = screen.getVisualBounds();
+					oldX = primaryStage.getX();
+					oldY = primaryStage.getY();
+					primaryStage.setX(bounds.getMinX());
+					primaryStage.setY(bounds.getMinY());
+					primaryStage.setWidth(bounds.getWidth());
+					primaryStage.setHeight(bounds.getHeight());
+					text.setPrefSize(bounds.getWidth()-125-textOffset, bounds.getHeight()-100);
+					inputTextField.setPrefWidth(bounds.getWidth()-125-textOffset);
+					maxToggle = true;
+				}
+				else if(maxToggle == true){
+					primaryStage.setX(oldX);
+					primaryStage.setY(oldY);
+					primaryStage.setWidth(oldW);
+					primaryStage.setHeight(oldH);
+					text.setPrefSize(375-textOffset, 400);
+					inputTextField.setPrefWidth(375-textOffset);
+					maxToggle = false;
+				}
+			}
+		});
+		
 		ToolBar toolbar = new ToolBar();
 		toolbar.getItems().addAll(closeButton, new Label(" "), 
 				minimizeButton, new Label(" "), maximizeButton);
+		toolbar.setOnMousePressed(new EventHandler<MouseEvent>() {
+	        @Override
+	        public void handle(MouseEvent event) {
+	            xOffset = event.getSceneX();
+	            yOffset = event.getSceneY();
+	        }
+        });
+        toolbar.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                primaryStage.setX(event.getScreenX() - xOffset);
+                primaryStage.setY(event.getScreenY() - yOffset);
+            }
+        });
 		
 		//Scrolling Text
-		int textOffset = 5;
 		text = new TextArea();
 		text.setEditable(false);
 		text.setPrefSize(375-textOffset, 400);
