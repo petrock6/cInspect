@@ -73,9 +73,9 @@ public class GUI extends Application {
 		
 		//Interactive objects instantiation
 		inputTextField = new TextField();
-		inputTextField.setPrefWidth(400);
-		inputTextField.setLayoutX(50);
-		inputTextField.setLayoutY(15);
+		inputTextField.setPrefWidth(370);
+		inputTextField.setLayoutX(5);
+		//inputTextField.setLayoutY(5);
 		inputTextField.setOnAction(new TextFieldHandler());
 		sqlCheck = new CheckBox("SQL");
 		rceCheck = new CheckBox("RCE");
