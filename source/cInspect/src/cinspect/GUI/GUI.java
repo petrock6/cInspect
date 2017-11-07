@@ -18,6 +18,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.TextArea;
 
 import java.util.List;
 import java.util.Collections;
@@ -40,6 +41,7 @@ public class GUI extends Application {
 			 rfiCheck, tsqlCheck, udrjsCheck, appdosCheck,
 			 phpinfoCheck, ccssnCheck;
 	Button runButton, stopButton, closeButton, minimizeButton, maximizeButton;
+	static TextArea text;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -101,6 +103,14 @@ public class GUI extends Application {
 		toolbar.getItems().addAll(closeButton, new Label(" "), 
 				minimizeButton, new Label(" "), maximizeButton);
 		
+		//Scrolling Text
+		int textOffset = 5;
+		text = new TextArea();
+		text.setEditable(false);
+		text.setPrefSize(375-textOffset, 400);
+		text.setLayoutX(textOffset);
+		text.setLayoutY(textOffset);
+		
 		//Add items to VBox
 		optionsVBox.getChildren().add(checkboxVBox);
 		checkboxVBox.getChildren().addAll(sqlCheck, rceCheck, lfiCheck, xssCheck, 
@@ -110,12 +120,14 @@ public class GUI extends Application {
 		//Add items to Bottom Pane
 		textInputPane.getChildren().add(inputTextField);
 		
+		//Add items to Center Pane
+		textDisplayPane.getChildren().add(text);
+		
 		//BorderPane layout
 		mainPane.setCenter(textDisplayPane);
 		mainPane.setBottom(textInputPane);
 		mainPane.setRight(optionsVBox);
 		mainPane.setTop(toolbar);
-		
 		
 		//Display App
 		primaryStage.show();
@@ -124,13 +136,14 @@ public class GUI extends Application {
 	
 	public static void print(String output){
 		System.out.println(output);
+		text.appendText(output+"\n");
 	}
 	
 	public class TextFieldHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent event) {
 			String input = inputTextField.getText();
 			inputTextField.setText("");
-			System.out.println(input);
+			print(input);
 		}
 	}
 	
@@ -148,7 +161,7 @@ public class GUI extends Application {
 	
 	public class RunButtonHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent event) {
-			Main main = new Main();
+			//Main main = new Main();
 			//String url = "http://localhost/vulnerabilites/"; //Change this to whatever it needs to be
 			
 			String url = "http://192.168.1.29/";
@@ -156,15 +169,15 @@ public class GUI extends Application {
 	        crawler.addUrl(url);
 	        crawler.crawl();
 	        
-	        System.out.println("------------ DONE ----------");
+	        print("------------ DONE ----------");
 	        WebDatabase.printDatabase();
 			
-	        System.out.println("\n\n\n");
+	        print("\n\n\n");
 			
 			List<WebResource> resources = WebDatabase.getDatabase(); //this needs to be updated.
 			Collections.reverse(resources);
 			
-			System.out.println("\n");
+			print("\n");
 			
 			
 			Main.spawnThreads(3, sqlCheck.isSelected(), rceCheck.isSelected(), lfiCheck.isSelected(), xssCheck.isSelected(), rfiCheck.isSelected(), tsqlCheck.isSelected(), udrjsCheck.isSelected(), appdosCheck.isSelected(), phpinfoCheck.isSelected(), ccssnCheck.isSelected());

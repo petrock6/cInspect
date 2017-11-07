@@ -66,55 +66,55 @@ public class Main extends GUI{
 		for(WebResource resource : WebDatabase.getDatabase()) {
 			if(!resource.getParameters().isEmpty() ) {
 				if(sql && resource.getInspectStatus().getSql() == SQLInspectorStatus.NOT_INSPECTED) {
-					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SQL Injection\n"); 
+					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SQL Injection\n"); 
 					testSQLInspector(resource);
 				}
 				if(rce && resource.getInspectStatus().getRce() == RCEInspectorStatus.NOT_INSPECTED) {
-					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RCE Injection\n");
+					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RCE Injection\n");
 					testRCEInspector(resource);
 				}
 				if(lfi && resource.getInspectStatus().getLfi() == LFIInspectorStatus.NOT_INSPECTED) {
-					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : LFI\n");
+					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : LFI\n");
 					testLFIInspector(resource);
 				}
 				if(xss && resource.getInspectStatus().getXss() == XSSInspectorStatus.NOT_INSPECTED) {
-					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : XSS Injection\n");
+					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : XSS Injection\n");
 					testXSSInspector(resource);
 				}
 				if(rfi && resource.getInspectStatus().getRfi() == RFIInspectorStatus.NOT_INSPECTED) {
-					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RFI\n");
+					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RFI\n");
 					testRFIInspector(resource);
 				}
 				if(tsql && resource.getInspectStatus().getTimedSQL() == TimedSQLInspectorStatus.NOT_INSPECTED) {
-					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : TimeSQL Injection\n");
+					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : TimeSQL Injection\n");
 					testTimeSQLInspector(resource);
 				}
 				if(udrjs && resource.getInspectStatus().getUDRJS() == UDRJSInspectorStatus.NOT_INSPECTED) {
-					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : UDR\n");
+					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : UDR\n");
 					testUDRJSInspector(resource);
 				}
 				if(appdos && resource.getInspectStatus().getAppDoS() == AppDoSInspectorStatus.NOT_INSPECTED){
-					System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : Application DoS\r");
+					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : Application DoS\r");
 					testAppDoSInspector(resource);
 				}
 			}
 			/*
 			if(phpinfo) {
-				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : phpinfo()\r");
+				GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : phpinfo()\r");
 				main.testPhpinfoInspector(resource);
 			}*/
 			
 			if(ccssn && resource.getInspectStatus().getCc() == CCInspectorStatus.NOT_INSPECTED) {
-				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : CC\n");
+				GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : CC\n");
 				testCCInspector(resource);
 			}
 			if(ccssn && resource.getInspectStatus().getSsn() == SSNInspectorStatus.NOT_INSPECTED) {
-				System.out.println("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SSN\n");
+				GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SSN\n");
 				testSSNInspector(resource);
 			}
-			//System.out.println("\n");
+			//GUI.print("\n");
 		}	
-		System.out.println("--- DONE ---");
+		GUI.print("--- DONE ---");
 	}
 	
 	public static void testSQLInspector(WebResource resource) {
@@ -129,10 +129,10 @@ public class Main extends GUI{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//System.out.println("");
+				//GUI.print("");
 				GUI.print(resource.getUrlPath() + " SQL vulnerable !!!");
 			} else {
-				//System.out.println(resource.getUrlPath() + " not SQL vulnerable");
+				//GUI.print(resource.getUrlPath() + " not SQL vulnerable");
 			}
 		}
 	}
@@ -149,11 +149,11 @@ public class Main extends GUI{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//System.out.println("");
+				//GUI.print("");
 				GUI.print(resource.getUrlPath() + " RCE vulnerable !!!");
 			}
 			//else
-			//	System.out.println(resource.getUrlPath() + " not RCE vulnerable");
+			//	GUI.print(resource.getUrlPath() + " not RCE vulnerable");
 		}	
 	}
 	
@@ -169,11 +169,11 @@ public class Main extends GUI{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//System.out.println("");
+				//GUI.print("");
 				GUI.print(resource.getUrlPath() + " LFI vulnerable !!!");
 			}
 			//else
-			//	System.out.println(resource.getUrlPath() + " not LFI vulnerable");
+			//	GUI.print(resource.getUrlPath() + " not LFI vulnerable");
 		}	
 	}
 	
@@ -189,11 +189,11 @@ public class Main extends GUI{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//System.out.println("");
+				//GUI.print("");
 				GUI.print(resource.getUrlPath() + " XSS vulnerable !!!");
 			}
 			//else
-			//	System.out.println(resource.getUrlPath() + " not XSS vulnerable");
+			//	GUI.print(resource.getUrlPath() + " not XSS vulnerable");
 		}	
 	}
 	
@@ -209,11 +209,11 @@ public class Main extends GUI{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//System.out.println("");
+				//GUI.print("");
 				GUI.print(resource.getUrlPath() + " RFI vulnerable !!!");
 			}
 			//else
-			//	System.out.println(resource.getUrlPath() + " not RFI vulnerable");
+			//	GUI.print(resource.getUrlPath() + " not RFI vulnerable");
 		}	
 	}
 	
@@ -229,10 +229,10 @@ public class Main extends GUI{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//System.out.println("");
+				//GUI.print("");
 				GUI.print(resource.getUrlPath() + " TimeSQL vulnerable !!!");
 			} else {
-				//System.out.println(resource.getUrlPath() + " not TimeSQL vulnerable");
+				//GUI.print(resource.getUrlPath() + " not TimeSQL vulnerable");
 			}
 		}
 	}
@@ -249,10 +249,10 @@ public class Main extends GUI{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//System.out.println("");
-				System.out.println(resource.getUrlPath() + " UDRJS vulnerable !!!");
+				//GUI.print("");
+				GUI.print(resource.getUrlPath() + " UDRJS vulnerable !!!");
 			} else {
-				//System.out.println(resource.getUrlPath() + " not UDRJS vulnerable");
+				//GUI.print(resource.getUrlPath() + " not UDRJS vulnerable");
 			}
 		}
 	}
@@ -269,10 +269,10 @@ public class Main extends GUI{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//System.out.println("");
-				System.out.println(resource.getUrlPath() + " AppDoS vulnerable !!!");
+				//GUI.print("");
+				GUI.print(resource.getUrlPath() + " AppDoS vulnerable !!!");
 			} else {
-				//System.out.println(resource.getUrlPath() + " not AppDoS vulnerable");
+				//GUI.print(resource.getUrlPath() + " not AppDoS vulnerable");
 			}
 		}
 	}
@@ -289,10 +289,10 @@ public class Main extends GUI{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//System.out.println("");
-				System.out.println(resource.getUrlPath() + " CC vulnerable !!!");
+				//GUI.print("");
+				GUI.print(resource.getUrlPath() + " CC vulnerable !!!");
 			} else {
-				//System.out.println(resource.getUrlPath() + " not CC vulnerable");
+				//GUI.print(resource.getUrlPath() + " not CC vulnerable");
 			}
 		}
 	}
@@ -309,10 +309,10 @@ public class Main extends GUI{
 			Map<String, VulnerabilityAssessment> assessment = inspector.isVulnerable(resource);
 			
 			if(!assessment.isEmpty()) {
-				//System.out.println("");
-				System.out.println(resource.getUrlPath() + " SSN vulnerable !!!");
+				//GUI.print("");
+				GUI.print(resource.getUrlPath() + " SSN vulnerable !!!");
 			} else {
-				//System.out.println(resource.getUrlPath() + " not SSN vulnerable");
+				//GUI.print(resource.getUrlPath() + " not SSN vulnerable");
 			}
 		}
 	}
