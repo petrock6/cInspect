@@ -54,6 +54,7 @@ public class GUI extends Application {
 	double xOffset, yOffset, textOffset = 5;
 	boolean maxToggle = false;
 	double oldX, oldY, oldW, oldH;
+	String url = "http://192.168.1.29/";
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -242,7 +243,9 @@ public class GUI extends Application {
 		public void handle(ActionEvent event) {
 			String input = inputTextField.getText();
 			inputTextField.setText("");
+			url = input;
 			print(input);
+			print(url);
 		}
 	}
 	
@@ -260,10 +263,6 @@ public class GUI extends Application {
 	
 	public class RunButtonHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent event) {
-			//Main main = new Main();
-			//String url = "http://localhost/vulnerabilites/"; //Change this to whatever it needs to be
-			
-			String url = "http://192.168.1.29/";
 	        CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
 	        crawler.addUrl(url);
 	        crawler.crawl();
