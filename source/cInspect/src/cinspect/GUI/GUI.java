@@ -17,13 +17,16 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 import java.util.Collections;
@@ -43,6 +46,7 @@ public class GUI extends Application {
 	VBox optionsVBox, checkboxVBox, delayBox;
 	HBox bottomBox;
 	TextField inputTextField;
+	ScrollPane scroll;
 	CheckBox sqlCheck, rceCheck, lfiCheck, xssCheck, 
 			 rfiCheck, tsqlCheck, udrjsCheck, appdosCheck,
 			 phpinfoCheck, ccssnCheck;
@@ -50,7 +54,7 @@ public class GUI extends Application {
 	Slider delaySlider;
 	Label delayLabel;
 	ProgressBar loadingBar;
-	static TextArea text;
+	static TextFlow text;
 	double xOffset, yOffset, textOffset = 5;
 	boolean maxToggle = false;
 	double oldX, oldY, oldW, oldH;
@@ -163,7 +167,7 @@ public class GUI extends Application {
 					primaryStage.setY(bounds.getMinY());
 					primaryStage.setWidth(bounds.getWidth());
 					primaryStage.setHeight(bounds.getHeight());
-					text.setPrefSize(bounds.getWidth()-125-textOffset, bounds.getHeight()-100);
+					scroll.setPrefSize(bounds.getWidth()-125-textOffset, bounds.getHeight()-100);
 					inputTextField.setPrefWidth(bounds.getWidth()-125-textOffset);
 					maxToggle = true;
 				}
@@ -202,12 +206,21 @@ public class GUI extends Application {
         loadingBar.setProgress(0);
         loadingBar.setLayoutX(10);
         
-		//Scrolling Text
-		text = new TextArea();
-		text.setEditable(false);
-		text.setPrefSize(375-textOffset, 400);
-		text.setLayoutX(textOffset);
-		text.setLayoutY(textOffset);
+        //Textflow
+  		text = new TextFlow();
+  		text.setPrefSize(375-textOffset, 400);
+  		text.setLayoutX(textOffset);
+  		text.setLayoutY(textOffset);
+  		
+  		//ScrollPane
+  		scroll = new ScrollPane();
+  		scroll.setContent(text);
+  		scroll.setPrefSize(375-textOffset, 400);
+  		scroll.setStyle("-fx-background-color: WHITE;");
+  		scroll.setLayoutX(textOffset);
+  		scroll.setLayoutY(textOffset);
+  		scroll.vvalueProperty().bind(text.heightProperty());
+  		//scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		
 		//Add items to VBox
 		optionsVBox.getChildren().addAll(checkboxVBox, delayBox, runButton, stopButton);
@@ -221,7 +234,7 @@ public class GUI extends Application {
 		loadingPane.getChildren().addAll(loadingBar);
 		
 		//Add items to Center Pane
-		textDisplayPane.getChildren().add(text);
+		textDisplayPane.getChildren().add(scroll);
 		
 		//BorderPane layout
 		mainPane.setCenter(textDisplayPane);
@@ -236,7 +249,21 @@ public class GUI extends Application {
 	
 	public static void print(String output){
 		System.out.println(output);
-		text.appendText(output+"\n");
+		String temp = output;
+		Text t = new Text();
+		t.setText(temp);
+		Text tnewline = new Text();
+		tnewline.setText("\n");
+		if(temp.indexOf("vulnerable") != -1)
+			t.setFill(Color.RED);
+		Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+            	text.getChildren().addAll(t, tnewline);
+           }
+         });
+
+		//text.appendText(output+"\n");
 	}
 	
 	public class TextFieldHandler implements EventHandler<ActionEvent>{
@@ -244,8 +271,7 @@ public class GUI extends Application {
 			String input = inputTextField.getText();
 			inputTextField.setText("");
 			url = input;
-			print(input);
-			print(url);
+			print("URL: " + input);
 		}
 	}
 	
