@@ -60,6 +60,8 @@ public class GUI extends Application {
 	double oldX, oldY, oldW, oldH;
 	String url = "http://192.168.1.29/";
 	
+	static int requestDelay = 0;
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
@@ -126,12 +128,13 @@ public class GUI extends Application {
 		delayLabel = new Label("Delay: 0 ms");
 		delaySlider = new Slider();
 		delaySlider.setMin(0);
-		delaySlider.setMax(100);
+		delaySlider.setMax(1000);
 		delaySlider.setValue(0);
 		delaySlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
             	delayLabel.setText("Delay: " + String.format("%.0f", new_val) + " ms");
-            	loadingBar.setProgress(new_val.doubleValue()/100);
+            	requestDelay = new_val.intValue();
+            	loadingBar.setProgress(new_val.doubleValue()/1000);
             }
         });
 		
@@ -307,5 +310,9 @@ public class GUI extends Application {
 			Main.spawnThreads(3, sqlCheck.isSelected(), rceCheck.isSelected(), lfiCheck.isSelected(), xssCheck.isSelected(), rfiCheck.isSelected(), tsqlCheck.isSelected(), udrjsCheck.isSelected(), appdosCheck.isSelected(), phpinfoCheck.isSelected(), ccssnCheck.isSelected());
 		
 		}
+	}
+	
+	public synchronized static int getRequestDelay() {
+		return requestDelay;
 	}
 }

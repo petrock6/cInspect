@@ -51,7 +51,12 @@ public class Main extends GUI{
 	public static void spawnThreads(int numThreads, boolean sql, boolean rce, boolean lfi, boolean xss, boolean rfi, boolean tsql, boolean udrjs, boolean appdos, boolean phpinfo, boolean ccssn) {
 		Runnable r = new Runnable() {
 			public void run() {
-				spawnThread(sql, rce, lfi, xss, rfi, tsql, udrjs, appdos, phpinfo, ccssn);
+				try {
+					spawnThread(sql, rce, lfi, xss, rfi, tsql, udrjs, appdos, phpinfo, ccssn);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		};
 		
@@ -62,40 +67,48 @@ public class Main extends GUI{
 			t.start();
 	}
 	
-	public static void spawnThread(boolean sql, boolean rce, boolean lfi, boolean xss, boolean rfi, boolean tsql, boolean udrjs, boolean appdos, boolean phpinfo, boolean ccssn) {
+	public static void spawnThread(boolean sql, boolean rce, boolean lfi, boolean xss, boolean rfi, boolean tsql, boolean udrjs, boolean appdos, boolean phpinfo, boolean ccssn) throws InterruptedException {
 		for(WebResource resource : WebDatabase.getDatabase()) {
 			if(!resource.getParameters().isEmpty() ) {
 				if(sql && resource.getInspectStatus().getSql() == SQLInspectorStatus.NOT_INSPECTED) {
 					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SQL Injection\n"); 
 					testSQLInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
 				}
 				if(rce && resource.getInspectStatus().getRce() == RCEInspectorStatus.NOT_INSPECTED) {
 					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RCE Injection\n");
 					testRCEInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
 				}
 				if(lfi && resource.getInspectStatus().getLfi() == LFIInspectorStatus.NOT_INSPECTED) {
 					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : LFI\n");
 					testLFIInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
 				}
 				if(xss && resource.getInspectStatus().getXss() == XSSInspectorStatus.NOT_INSPECTED) {
 					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : XSS Injection\n");
 					testXSSInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
 				}
 				if(rfi && resource.getInspectStatus().getRfi() == RFIInspectorStatus.NOT_INSPECTED) {
 					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RFI\n");
 					testRFIInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
 				}
 				if(tsql && resource.getInspectStatus().getTimedSQL() == TimedSQLInspectorStatus.NOT_INSPECTED) {
 					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : TimeSQL Injection\n");
 					testTimeSQLInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
 				}
 				if(udrjs && resource.getInspectStatus().getUDRJS() == UDRJSInspectorStatus.NOT_INSPECTED) {
 					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : UDR\n");
 					testUDRJSInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
 				}
 				if(appdos && resource.getInspectStatus().getAppDoS() == AppDoSInspectorStatus.NOT_INSPECTED){
 					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : Application DoS\r");
 					testAppDoSInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
 				}
 			}
 			/*
@@ -107,10 +120,12 @@ public class Main extends GUI{
 			if(ccssn && resource.getInspectStatus().getCc() == CCInspectorStatus.NOT_INSPECTED) {
 				GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : CC\n");
 				testCCInspector(resource);
+				Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
 			}
 			if(ccssn && resource.getInspectStatus().getSsn() == SSNInspectorStatus.NOT_INSPECTED) {
 				GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SSN\n");
 				testSSNInspector(resource);
+				Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
 			}
 			//GUI.print("\n");
 		}	

@@ -66,11 +66,14 @@ public class CrawlerMT {
                 System.out.println(nextUrl);
                 CrawlJobMT crawlJob = new CrawlJobMT(nextUrl, this);
                 crawlService.submit(crawlJob);
+                Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
                 //neads further refactoring
                 //this serves only for testing
                 synchronized(this){
                     count++;
-                     
+                    
+                    //update bar here
+                    
                 }
                 if(linksQueue.isEmpty()){
                       barrier.await();
