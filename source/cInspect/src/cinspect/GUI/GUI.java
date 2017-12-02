@@ -176,7 +176,7 @@ public class GUI extends Application {
 					primaryStage.setY(oldY);
 					primaryStage.setWidth(oldW);
 					primaryStage.setHeight(oldH);
-					text.setPrefSize(375-textOffset, 400);
+					scroll.setPrefSize(375-textOffset, 400);
 					inputTextField.setPrefWidth(375-textOffset);
 					maxToggle = false;
 				}
