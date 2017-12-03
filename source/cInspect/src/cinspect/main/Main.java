@@ -211,6 +211,18 @@ public class Main extends GUI{
 		//print(getTotalScanned() + " " + getTotalToScan());
 		//if(getTotalScanned() == getTotalToScan())
 		//	GUI.print("--- DONE ---");
+		
+		int n = 0;
+		for(Thread t : threads) {
+			if(t.isAlive())
+				n++;
+		}
+		
+		//GUI.print(n + "");
+		
+		if(n <= 1) {
+			GUI.print("Done scanning.");
+		}
 	}
 	
 	public static void testSQLInspector(WebResource resource) {
