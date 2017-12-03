@@ -23,7 +23,7 @@ public class CrawlerMT {
 
     protected IUrlFilter urlFilter     = null;
     
-    protected Set<String>  crawledUrls = new HashSet<String>();
+    public static Set<String>  crawledUrls = new HashSet<String>();
     private ExecutorService crawlService;
     protected final LinkedBlockingQueue<String> linksQueue = new LinkedBlockingQueue<>();
     protected CyclicBarrier barrier = new CyclicBarrier(2);
@@ -45,6 +45,7 @@ public class CrawlerMT {
         //create thread pool
         crawlService = Executors.newCachedThreadPool();
         int count=0;
+        int maxLinks = 0;
         
         while(!linksQueue.isEmpty()) {
             String nextUrl=null;
@@ -61,6 +62,9 @@ public class CrawlerMT {
 
 
             this.crawledUrls.add(nextUrl);
+            
+            if(maxLinks < linksQueue.size()) 
+            	maxLinks = linksQueue.size();
 
             try {
                 System.out.println(nextUrl);
@@ -73,6 +77,8 @@ public class CrawlerMT {
                     count++;
                     
                     //update bar here
+                    cinspect.GUI.GUI.loadingBar.setProgress(((float)count) / maxLinks);
+                    System.out.println("count = " + count + " ; maxLinks = " + maxLinks);
                     
                 }
                 if(linksQueue.isEmpty()){

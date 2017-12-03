@@ -53,7 +53,7 @@ public class GUI extends Application {
 	Button runButton, stopButton, closeButton, minimizeButton, maximizeButton;
 	Slider delaySlider;
 	Label delayLabel;
-	ProgressBar loadingBar;
+	public static ProgressBar loadingBar;
 	static TextFlow text;
 	double xOffset, yOffset, textOffset = 5;
 	boolean maxToggle = false;
@@ -134,7 +134,7 @@ public class GUI extends Application {
             public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
             	delayLabel.setText("Delay: " + String.format("%.0f", new_val) + " ms");
             	requestDelay = new_val.intValue();
-            	loadingBar.setProgress(new_val.doubleValue()/1000);
+            	//loadingBar.setProgress(new_val.doubleValue()/1000);
             }
         });
 		
@@ -292,23 +292,31 @@ public class GUI extends Application {
 	
 	public class RunButtonHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent event) {
-	        CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
-	        crawler.addUrl(url);
-	        crawler.crawl();
+			Thread crawlerManagerThread = new Thread() {
+				public void run() {
+					//all this needs to be in a thread
+					CrawlerMT crawler  = new CrawlerMT(new SameWebsiteOnlyFilter(url));
+	        		crawler.addUrl(url);
+	        		crawler.crawl();
 	        
-	        print("------------ DONE ----------");
-	        WebDatabase.printDatabase();
+	        		print("Done crawling. Crawled " + com.jenkov.crawler.mt.io.CrawlerMT.crawledUrls.size() + " URLS.");
+	        		WebDatabase.printDatabase();
+	        		
+	        		//reset the progress bar:
+	        		loadingBar.setProgress(0);
 			
-	        print("\n\n\n");
+					List<WebResource> resources = WebDatabase.getDatabase(); //this needs to be updated.
+					Collections.reverse(resources);
 			
-			List<WebResource> resources = WebDatabase.getDatabase(); //this needs to be updated.
-			Collections.reverse(resources);
-			
-			print("\n");
+					print("\n");
 			
 			
-			Main.spawnThreads(3, sqlCheck.isSelected(), rceCheck.isSelected(), lfiCheck.isSelected(), xssCheck.isSelected(), rfiCheck.isSelected(), tsqlCheck.isSelected(), udrjsCheck.isSelected(), appdosCheck.isSelected(), phpinfoCheck.isSelected(), ccssnCheck.isSelected());
-		
+					Main.spawnThreads(3, sqlCheck.isSelected(), rceCheck.isSelected(), lfiCheck.isSelected(), xssCheck.isSelected(), rfiCheck.isSelected(), tsqlCheck.isSelected(), udrjsCheck.isSelected(), appdosCheck.isSelected(), phpinfoCheck.isSelected(), ccssnCheck.isSelected());
+				}
+			};
+			
+			crawlerManagerThread.start();
+			print("Starting to crawl...");
 		}
 	}
 	
