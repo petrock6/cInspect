@@ -43,12 +43,16 @@ public class Main extends GUI{
 	
 	public static ArrayList<Thread> threads = new ArrayList<Thread>();
 	
+	public static int totalToScan;
+	public static int totalScanned;
+	
 	public static void main(String[] args) {
 		globalArgs = args;
 		launch(globalArgs);
 	}
-
-	public static void spawnThreads(int numThreads, boolean sql, boolean rce, boolean lfi, boolean xss, boolean rfi, boolean tsql, boolean udrjs, boolean appdos, boolean phpinfo, boolean ccssn) {
+	
+	public static void spawnThreads(int numThreads, boolean sql, boolean rce, boolean lfi, boolean xss, boolean rfi, boolean tsql, boolean udrjs, boolean appdos, boolean phpinfo, boolean ccssn) throws InterruptedException {
+		totalToScan = determineTotalWork(sql, rce, lfi, xss, rfi, tsql, udrjs, appdos, phpinfo, ccssn);
 		Runnable r = new Runnable() {
 			public void run() {
 				try {
@@ -65,50 +69,112 @@ public class Main extends GUI{
 		
 		for(Thread t : threads)
 			t.start();
+		
+		resetTotalScanned();
 	}
 	
-	public static void spawnThread(boolean sql, boolean rce, boolean lfi, boolean xss, boolean rfi, boolean tsql, boolean udrjs, boolean appdos, boolean phpinfo, boolean ccssn) throws InterruptedException {
+	public static int determineTotalWork(boolean sql, boolean rce, boolean lfi, boolean xss, boolean rfi, boolean tsql, boolean udrjs, boolean appdos, boolean phpinfo, boolean ccssn) throws InterruptedException {
+		int count = 0;
+		
 		for(WebResource resource : WebDatabase.getDatabase()) {
 			if(!resource.getParameters().isEmpty() ) {
 				if(sql && resource.getInspectStatus().getSql() == SQLInspectorStatus.NOT_INSPECTED) {
-					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SQL Injection\n"); 
-					testSQLInspector(resource);
-					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					count++;
 				}
 				if(rce && resource.getInspectStatus().getRce() == RCEInspectorStatus.NOT_INSPECTED) {
-					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RCE Injection\n");
-					testRCEInspector(resource);
-					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					count++;
 				}
 				if(lfi && resource.getInspectStatus().getLfi() == LFIInspectorStatus.NOT_INSPECTED) {
-					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : LFI\n");
-					testLFIInspector(resource);
-					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					count++;
 				}
 				if(xss && resource.getInspectStatus().getXss() == XSSInspectorStatus.NOT_INSPECTED) {
-					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : XSS Injection\n");
-					testXSSInspector(resource);
-					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					count++;
 				}
 				if(rfi && resource.getInspectStatus().getRfi() == RFIInspectorStatus.NOT_INSPECTED) {
-					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RFI\n");
-					testRFIInspector(resource);
-					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					count++;
 				}
 				if(tsql && resource.getInspectStatus().getTimedSQL() == TimedSQLInspectorStatus.NOT_INSPECTED) {
-					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : TimeSQL Injection\n");
-					testTimeSQLInspector(resource);
-					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					count++;
 				}
 				if(udrjs && resource.getInspectStatus().getUDRJS() == UDRJSInspectorStatus.NOT_INSPECTED) {
-					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : UDR\n");
-					testUDRJSInspector(resource);
-					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					count++;
 				}
 				if(appdos && resource.getInspectStatus().getAppDoS() == AppDoSInspectorStatus.NOT_INSPECTED){
-					GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : Application DoS\r");
+					count++;
+				}
+			}
+			
+			if(ccssn && resource.getInspectStatus().getCc() == CCInspectorStatus.NOT_INSPECTED) {
+				count++;
+			}
+			if(ccssn && resource.getInspectStatus().getSsn() == SSNInspectorStatus.NOT_INSPECTED) {
+				count++;
+			}			
+		}	
+
+		return count;
+	}
+	
+	public static void spawnThread(boolean sql, boolean rce, boolean lfi, boolean xss, boolean rfi, boolean tsql, boolean udrjs, boolean appdos, boolean phpinfo, boolean ccssn) throws InterruptedException {
+		int webDatabaseSize = WebDatabase.getDatabase().size();
+		
+		for(WebResource resource : WebDatabase.getDatabase()) {
+			if(!resource.getParameters().isEmpty() ) {
+				if(sql && resource.getInspectStatus().getSql() == SQLInspectorStatus.NOT_INSPECTED) {
+					resource.getInspectStatus().setSql(SQLInspectorStatus.CURRENTLY_INSPECTING);
+					//GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SQL Injection\n"); 
+					testSQLInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					addTotalScanned();
+				}
+				if(rce && resource.getInspectStatus().getRce() == RCEInspectorStatus.NOT_INSPECTED) {
+					resource.getInspectStatus().setRce(RCEInspectorStatus.CURRENTLY_INSPECTING);
+					//GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RCE Injection\n");
+					testRCEInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					addTotalScanned();
+				}
+				if(lfi && resource.getInspectStatus().getLfi() == LFIInspectorStatus.NOT_INSPECTED) {
+					resource.getInspectStatus().setLfi(LFIInspectorStatus.CURRENTLY_INSPECTING);
+					//GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : LFI\n");
+					testLFIInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					addTotalScanned();
+				}
+				if(xss && resource.getInspectStatus().getXss() == XSSInspectorStatus.NOT_INSPECTED) {
+					resource.getInspectStatus().setXss(XSSInspectorStatus.CURRENTLY_INSPECTING);
+					//GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : XSS Injection\n");
+					testXSSInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					addTotalScanned();
+				}
+				if(rfi && resource.getInspectStatus().getRfi() == RFIInspectorStatus.NOT_INSPECTED) {
+					resource.getInspectStatus().setRfi(RFIInspectorStatus.CURRENTLY_INSPECTING);
+					//GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : RFI\n");
+					testRFIInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					addTotalScanned();
+				}
+				if(tsql && resource.getInspectStatus().getTimedSQL() == TimedSQLInspectorStatus.NOT_INSPECTED) {
+					resource.getInspectStatus().setTimedSQL(TimedSQLInspectorStatus.CURRENTLY_INSPECTING);
+					//GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : TimeSQL Injection\n");
+					testTimeSQLInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					addTotalScanned();
+				}
+				if(udrjs && resource.getInspectStatus().getUDRJS() == UDRJSInspectorStatus.NOT_INSPECTED) {
+					resource.getInspectStatus().setUdrjs(UDRJSInspectorStatus.CURRENTLY_INSPECTING);
+					//GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : UDR\n");
+					testUDRJSInspector(resource);
+					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					addTotalScanned();
+				}
+				if(appdos && resource.getInspectStatus().getAppDoS() == AppDoSInspectorStatus.NOT_INSPECTED){
+					resource.getInspectStatus().setAppDoS(AppDoSInspectorStatus.CURRENTLY_INSPECTING);
+					//GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : Application DoS\r");
 					testAppDoSInspector(resource);
 					Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+					addTotalScanned();
 				}
 			}
 			/*
@@ -118,18 +184,33 @@ public class Main extends GUI{
 			}*/
 			
 			if(ccssn && resource.getInspectStatus().getCc() == CCInspectorStatus.NOT_INSPECTED) {
-				GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : CC\n");
+				resource.getInspectStatus().setCc(CCInspectorStatus.CURRENTLY_INSPECTING);
+				//GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : CC\n");
 				testCCInspector(resource);
 				Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+				addTotalScanned();
 			}
 			if(ccssn && resource.getInspectStatus().getSsn() == SSNInspectorStatus.NOT_INSPECTED) {
-				GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SSN\n");
+				resource.getInspectStatus().setSsn(SSNInspectorStatus.CURRENTLY_INSPECTING);
+				//GUI.print("Testing : " + resource.getUrlPath() + "?" + resource.getParametersAsEncodedString() + " : SSN\n");
 				testSSNInspector(resource);
 				Thread.sleep(cinspect.GUI.GUI.getRequestDelay());
+				addTotalScanned();
 			}
 			//GUI.print("\n");
+			
+			//update progress bar
+			//addTotalScanned();
+			//if(getTotalScanned() > getTotalToScan())
+			//	setTotalScanned(getTotalToScan() - 2);
+			//print(getTotalScanned() + " " + getTotalToScan());
+			GUI.setProgressBar( ((float)getTotalScanned()) / getTotalToScan());
+			//printScanningProgress();
+			
 		}	
-		GUI.print("--- DONE ---");
+		//print(getTotalScanned() + " " + getTotalToScan());
+		//if(getTotalScanned() == getTotalToScan())
+		//	GUI.print("--- DONE ---");
 	}
 	
 	public static void testSQLInspector(WebResource resource) {
@@ -332,6 +413,29 @@ public class Main extends GUI{
 		}
 	}
 	
-
+	private synchronized static int getTotalScanned() {
+		return totalScanned;
+	}
 	
+	private synchronized static void resetTotalScanned() {
+		totalScanned = 0;
+	}
+	
+	private synchronized static void setTotalScanned(int n) {
+		totalScanned = n;
+	}
+	
+	private synchronized static void addTotalScanned() {
+		totalScanned++;
+	}
+	
+	private synchronized static int getTotalToScan() {
+		return totalToScan;
+	}
+
+	private synchronized static void printScanningProgress() {
+		if(getTotalScanned() % 10 == 0) {
+			print(getTotalScanned() + " cases tested so far ...");
+		}
+	}
 }

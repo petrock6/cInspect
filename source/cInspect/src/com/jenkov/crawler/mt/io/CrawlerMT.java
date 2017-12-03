@@ -113,7 +113,7 @@ public class CrawlerMT {
         long endTime   = System.currentTimeMillis();
         long totalTime = endTime - startTime;
 
-        System.out.println("URL's crawled: " + count + " in " + totalTime + " ms (avg: " + totalTime / count + ")");
+        //System.out.println("URL's crawled: " + count + " in " + totalTime + " ms (avg: " + totalTime / count + ")");
 
     }
 

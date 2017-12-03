@@ -39,70 +39,70 @@ public class ResourceInspectStatus {
 		xss = XSSInspectorStatus.NOT_INSPECTED;
 	}
 	
-	public AppDoSInspectorStatus getAppDoS() {
+	public synchronized AppDoSInspectorStatus getAppDoS() {
 		return appDoS;
 	}
-	public void setAppDoS(AppDoSInspectorStatus appDoS) {
+	public synchronized void setAppDoS(AppDoSInspectorStatus appDoS) {
 		this.appDoS = appDoS;
 	}
-	public CCInspectorStatus getCc() {
+	public synchronized CCInspectorStatus getCc() {
 		return cc;
 	}
-	public void setCc(CCInspectorStatus cc) {
+	public synchronized void setCc(CCInspectorStatus cc) {
 		this.cc = cc;
 	}
-	public LFIInspectorStatus getLfi() {
+	public synchronized LFIInspectorStatus getLfi() {
 		return lfi;
 	}
-	public void setLfi(LFIInspectorStatus lfi) {
+	public synchronized void setLfi(LFIInspectorStatus lfi) {
 		this.lfi = lfi;
 	}
-	public PHPInfoInspectorStatus getPhpinfo() {
+	public synchronized PHPInfoInspectorStatus getPhpinfo() {
 		return phpinfo;
 	}
-	public void setPhpinfo(PHPInfoInspectorStatus phpinfo) {
+	public synchronized void setPhpinfo(PHPInfoInspectorStatus phpinfo) {
 		this.phpinfo = phpinfo;
 	}
-	public RCEInspectorStatus getRce() {
+	public synchronized RCEInspectorStatus getRce() {
 		return rce;
 	}
-	public void setRce(RCEInspectorStatus rce) {
+	public synchronized void setRce(RCEInspectorStatus rce) {
 		this.rce = rce;
 	}
-	public RFIInspectorStatus getRfi() {
+	public synchronized RFIInspectorStatus getRfi() {
 		return rfi;
 	}
-	public void setRfi(RFIInspectorStatus rfi) {
+	public synchronized void setRfi(RFIInspectorStatus rfi) {
 		this.rfi = rfi;
 	}
-	public SQLInspectorStatus getSql() {
+	public synchronized SQLInspectorStatus getSql() {
 		return sql;
 	}
-	public void setSql(SQLInspectorStatus sql) {
+	public synchronized void setSql(SQLInspectorStatus sql) {
 		this.sql = sql;
 	}
-	public SSNInspectorStatus getSsn() {
+	public synchronized SSNInspectorStatus getSsn() {
 		return ssn;
 	}
-	public void setSsn(SSNInspectorStatus ssn) {
+	public synchronized void setSsn(SSNInspectorStatus ssn) {
 		this.ssn = ssn;
 	}
-	public TimedSQLInspectorStatus getTimedSQL() {
+	public synchronized TimedSQLInspectorStatus getTimedSQL() {
 		return timedSQL;
 	}
-	public void setTimedSQL(TimedSQLInspectorStatus timedSQL) {
+	public synchronized void setTimedSQL(TimedSQLInspectorStatus timedSQL) {
 		this.timedSQL = timedSQL;
 	}
-	public UDRJSInspectorStatus getUDRJS() {
+	public synchronized UDRJSInspectorStatus getUDRJS() {
 		return udrjs;
 	}
-	public void setUdrjs(UDRJSInspectorStatus udrjs) {
+	public synchronized void setUdrjs(UDRJSInspectorStatus udrjs) {
 		this.udrjs = udrjs;
 	}
-	public XSSInspectorStatus getXss() {
+	public synchronized XSSInspectorStatus getXss() {
 		return xss;
 	}
-	public void setXss(XSSInspectorStatus xss) {
+	public synchronized void setXss(XSSInspectorStatus xss) {
 		this.xss = xss;
 	}
 }

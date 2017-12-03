@@ -164,7 +164,7 @@ public class WebResource {
 	 * Returns the {@link Map} of parameters associated with the {@link WebResource}. 
 	 * @return {@link Map}
 	 */
-	public Map<String, String> getParameters() {
+	public synchronized Map<String, String> getParameters() {
 		return parameters;
 	}
 
@@ -213,7 +213,7 @@ public class WebResource {
 	 * Gets the {@link ResourceInspectStatus} associated with the {@link WebResource}. 
 	 * @return
 	 */
-	public ResourceInspectStatus getInspectStatus() {
+	public synchronized ResourceInspectStatus getInspectStatus() {
 		return inspectStatus;
 	}
 
@@ -221,7 +221,7 @@ public class WebResource {
 	 * Sets the {@link ResourceInspectStatus} associated with the {@link WebResource}. 
 	 * @param inspectStatus
 	 */
-	public void setInspectStatus(ResourceInspectStatus inspectStatus) {
+	public synchronized void setInspectStatus(ResourceInspectStatus inspectStatus) {
 		this.inspectStatus = inspectStatus;
 	}
 	

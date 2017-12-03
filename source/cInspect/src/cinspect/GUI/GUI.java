@@ -311,7 +311,12 @@ public class GUI extends Application {
 					print("\n");
 			
 			
-					Main.spawnThreads(3, sqlCheck.isSelected(), rceCheck.isSelected(), lfiCheck.isSelected(), xssCheck.isSelected(), rfiCheck.isSelected(), tsqlCheck.isSelected(), udrjsCheck.isSelected(), appdosCheck.isSelected(), phpinfoCheck.isSelected(), ccssnCheck.isSelected());
+					try {
+						Main.spawnThreads(3, sqlCheck.isSelected(), rceCheck.isSelected(), lfiCheck.isSelected(), xssCheck.isSelected(), rfiCheck.isSelected(), tsqlCheck.isSelected(), udrjsCheck.isSelected(), appdosCheck.isSelected(), phpinfoCheck.isSelected(), ccssnCheck.isSelected());
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			};
 			
@@ -322,5 +327,9 @@ public class GUI extends Application {
 	
 	public synchronized static int getRequestDelay() {
 		return requestDelay;
+	}
+	
+	public synchronized static void setProgressBar(float f) {
+		loadingBar.setProgress(f);
 	}
 }
